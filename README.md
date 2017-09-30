@@ -1,6 +1,6 @@
 v.map
 
-v.map is a project made for the "Community Volunteers Foundation/Toplum Gönüllüleri Vakfı (TOG)". TOG is an organization with around 65k volunteers and the majority of them are students working in their cities/towns/villages.
+v.map is a project made for the "Community Volunteers Foundation/Toplum Gönüllüleri Vakfı (TOG)". TOG is an organization with around 65k volunteers and the majority of them are students working from their cities/towns/villages.
 
 Our web application aims to help them answer/create "needs" and organize them in an efficient manner the way "İhtiyaç Haritası" does it. 
 
