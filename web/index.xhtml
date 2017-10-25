@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+   <h:head>
+       <style type="text/css">
+           #map {
+               height: 100%;
+               width: 100%;
+           }
+       </style>
+       <script type="text/javascript" src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"/>
+       <script  type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSSCWTUs22Y7P48TIct292Esi-iBXujw" />
+       <script type="text/javascript" src="js/map.js"/>
+   </h:head>
+
+     <h:body>
+      <p:layout fullPage="true">
+         <p:layoutUnit position="north"  size="150"  >
+            <p:panelGrid columns="2" style="size: 100%" collumClasses="banner,user">
+                <p:graphicImage name="images/banner.gif" style="width: 80%" />
+                <p:outputPanel rendered="true">
+                        <h:form>
+                            <p:menuButton value="Options">
+                                <p:menuitem value="Update" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
+                                <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                                <p:separator />
+                                <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+                            </p:menuButton>
+                        </h:form>
+                </p:outputPanel>
+                <p:outputPanel rendered="false"></p:outputPanel>
+
+            </p:panelGrid>
+         </p:layoutUnit>
+         <p:layoutUnit position="east" size="400">
+                 <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
+                                 scrollHeight="500">
+                     <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                         <p:graphicImage value="images/embed2.jpg" width="120" height="100"/>
+                         <p:outputPanel>
+                             <h:form>
+                                 <p:remoteCommand name="sendID" process="@this" update="announcement" action="#{mapView.setAnnouncementToShow}" />
+                             </h:form>
+                             <h:panelGrid columns="2" cellpadding="5">
+                                 <h:outputText value="Id:" />
+                                 <h:outputText value="#{announcement.title}" style="font-weight: bold"/>
+
+                                 <h:outputText value="Year:" />
+                                 <h:outputText value="#{announcement.id}" style="font-weight: bold"/>
+
+                                 <p:commandButton value="Show" id="scrollbutton"  onclick="clickAnnouncement(#{announcement.id})"/>
+                             </h:panelGrid>
+                         </p:outputPanel>
+                     </h:panelGrid>
+                 </p:dataScroller>
+         </p:layoutUnit>
+         <p:layoutUnit position="center" value='10' >
+             <input type="hidden" name="filter" value='10' />
+             <div id="map" >
+                 <script type="text/javascript">
+                     getAnnouncements(#{mapView.announcementsMap});
+                     initMap();
+                 </script>
+                 <p:dialog id="announcementPopup" widgetVar="announcementPopup" showEffect="drop" hideEffect="drop"
+                           resizable="false" dynamic="true" closeOnEscape="true" position="150,250" >
+                     <h:outputText id="announcement" value="#{mapView.announcementToShow}" style="font-weight: bold"/>
+                 </p:dialog>
+             </div>
+         </p:layoutUnit>
+         <p:layoutUnit position="south" size="50">
+              Bottom
+         </p:layoutUnit>
+      </p:layout>
+     </h:body>
+
+</html>
