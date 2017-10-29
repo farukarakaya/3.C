@@ -36,5 +36,8 @@ public class MapView {
         //System.out.print(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("ID"));
     }
     public int getAnnouncementToShow(){return announcementToShow;   }
+    public Announcement getAnnouncememtByID(){
+        return dataSource.getAnnouncementByID(announcementToShow);
+    }
 
 }

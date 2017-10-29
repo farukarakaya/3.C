@@ -61,12 +61,15 @@ function setWindowContext(map,marker) {
     infowindow.open(map, marker);
 }
 function clickAnnouncement(id) {
-    if(infowindow != null)infowindow.close();
-    //PF('announcementPopup').close();
-    //console.log(id);
     sendID([{name:'ID', value:id}]);
-    PF('announcementPopup').show();
-
+}
+function sendSelectedCity(scity) {
+    //console.log(scity);
+    sendCity([{name:'SelectedCity', value:scity}]);
+}
+function sendSelectedDistrict(sdistrict) {
+    //console.log(sdistrict);
+    sendDistrict([{name:'SelectedDistrict', value:sdistrict}]);
 }
 
 /*var locations = [

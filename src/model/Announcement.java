@@ -5,6 +5,7 @@ package model;
  */
 public class Announcement {
     private String title;
+    private String contactInfo;
     private String city;
     private String district;
     private String category;
@@ -21,7 +22,7 @@ public class Announcement {
         this.id = id;
         this.pos = new Position(lng,lat);
     }
-    public Announcement(int id, String title, String city, String district, String category, boolean needOrDonation, double lat, double lng){
+    public Announcement(int id, String title, String city, String district, String category, String detail, String contactInfo,boolean needOrDonation, double lat, double lng){
         this.id = id;
         this.title = title;
         this.city = city;
@@ -29,10 +30,13 @@ public class Announcement {
         this.category = category;
         this.needOrDonation = needOrDonation;
         this.pos = new Position(lng,lat);
+        this.detail = detail;
+        this.contactInfo = contactInfo;
     }
     public int getId(){ return id;}
     public String getTitle (){return title;}
     public String getDetail(){return detail;}
+    public String getContactInfo(){return contactInfo;}
     public void setDetail(){
 
     }

@@ -21,43 +21,59 @@
 
      <h:body>
       <p:layout fullPage="true">
-         <p:layoutUnit position="north"  size="150"  >
-            <p:panelGrid columns="2" style="size: 100%" collumClasses="banner,user">
-                <p:graphicImage name="images/banner.gif" style="width: 80%" />
-                <p:outputPanel rendered="true">
-                        <h:form>
-                            <p:menuButton value="Options">
-                                <p:menuitem value="Update" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
-                                <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
-                                <p:separator />
-                                <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
-                            </p:menuButton>
-                        </h:form>
-                </p:outputPanel>
-                <p:outputPanel rendered="false"></p:outputPanel>
-
-            </p:panelGrid>
+         <p:layoutUnit position="north"  size="250"  >
+             <p:graphicImage value="images/banner.png" style="float: left; width: 80%" />
+             <p:outputPanel style="float: right">
+                 <h:form>
+                 <p:menu value="Options" rendered="#{sessionView.loggedIn}">
+                     <p:menuitem value="Update" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
+                     <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                     <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                     <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                     <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                     <p:separator/>
+                     <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+                 </p:menu>
+                 </h:form>
+             </p:outputPanel>
+             <h:form>
+                 <p:remoteCommand name="sendCity" process="@this" update="DistrictFilter" action="#{filterView.setCity}"/>
+                 <p:remoteCommand name="sendDistrict" process="@this"  action="#{filterView.setDistrict}"/>
+             </h:form>
+             <p:panelGrid columns="3" cellpadding="1">
+                 <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{filterView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
+                     <f:selectItem itemLabel="Select City"  itemValue="" />
+                     <f:selectItems value="#{filterView.cities}" var="city" itemValue="#{city}" />
+                     <p:ajax event="change" oncomplete="sendSelectedCity(value)"/>
+                 </p:selectOneMenu>
+                 <p:selectOneMenu disabled="#{filterView.citySelected}" id="DistrictFilter" value="#{filterView.district}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                    <f:selectItem  itemLabel="Select District" itemValue="" />
+                    <f:selectItems value="#{filterView.districts}" />
+                    <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
+                 </p:selectOneMenu>
+             </p:panelGrid>
          </p:layoutUnit>
          <p:layoutUnit position="east" size="400">
                  <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
-                                 scrollHeight="500">
+                                 scrollHeight="400">
                      <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                          <p:graphicImage value="images/embed2.jpg" width="120" height="100"/>
                          <p:outputPanel>
                              <h:form>
-                                 <p:remoteCommand name="sendID" process="@this" update="announcement" action="#{mapView.setAnnouncementToShow}" />
+                                 <p:remoteCommand name="sendID" process="@this" oncomplete="PF('announcementPopup').show()"
+                                                 update="announcementPopup" action="#{mapView.setAnnouncementToShow}" />
                              </h:form>
-                             <h:panelGrid columns="2" cellpadding="5">
-                                 <h:outputText value="Id:" />
+                             <h:panelGrid columns="1" cellpadding="2">
                                  <h:outputText value="#{announcement.title}" style="font-weight: bold"/>
 
-                                 <h:outputText value="Year:" />
                                  <h:outputText value="#{announcement.id}" style="font-weight: bold"/>
 
                                  <p:commandButton value="Show" id="scrollbutton"  onclick="clickAnnouncement(#{announcement.id})"/>
+
                              </h:panelGrid>
                          </p:outputPanel>
                      </h:panelGrid>
+                     <p:separator />
                  </p:dataScroller>
          </p:layoutUnit>
          <p:layoutUnit position="center" value='10' >
@@ -67,9 +83,13 @@
                      getAnnouncements(#{mapView.announcementsMap});
                      initMap();
                  </script>
-                 <p:dialog id="announcementPopup" widgetVar="announcementPopup" showEffect="drop" hideEffect="drop"
-                           resizable="false" dynamic="true" closeOnEscape="true" position="150,250" >
-                     <h:outputText id="announcement" value="#{mapView.announcementToShow}" style="font-weight: bold"/>
+                 <p:dialog header="#{mapView.getAnnouncememtByID().title}" id="announcementPopup" widgetVar="announcementPopup"
+                           showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="150,250" >
+                     <p:graphicImage value="images/embed2.jpg" width="240" height="200" style="float: left"/>
+                     <h:panelGrid columns="1" style="margin-bottom:10px; float: left" cellpadding="5">
+                         <h:outputText value="#{mapView.getAnnouncememtByID().detail}" style="font-weight: mormal"/>
+                         <h:outputText rendered="#{sessionView.loggedIn}" value="#{mapView.getAnnouncememtByID().contactInfo}" style="font-weight: mormal"/>
+                     </h:panelGrid>
                  </p:dialog>
              </div>
          </p:layoutUnit>

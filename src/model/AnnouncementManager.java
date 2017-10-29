@@ -19,11 +19,12 @@ public class AnnouncementManager {
     public List<Announcement> getAnnouncementsMap(){
         return announcements;
     }
+    public Announcement getAnnouncementByID(int id) {return announcements.get(id);}
     public List<Announcement> generateDummyAnnouncements(int size){
         announcements = new ArrayList<>();
         for (int i = 0; i < size; i++){
             announcements.add(new Announcement(i,"Announcement"+i,"City"+i,"District"+i,
-                    "Category"+i,true,36+ Math.random()*6,26+ Math.random()*19));
+                    "Category"+i, "Announcement"+i +"Detail","Announcement"+i +"ContactInfo" ,true,36+ Math.random()*6,26+ Math.random()*19));
         }
         return announcements;
     }
