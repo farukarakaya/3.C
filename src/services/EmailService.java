@@ -225,7 +225,10 @@ public class EmailService {
 
     }
 
-    private void sendEmail(String recieverEmail, String mailSubject, String contentOfEmail) {
+    private boolean sendEmail(String recieverEmail, String mailSubject, String contentOfEmail) {
+
+        boolean success = true;
+
         try {
             Message message = new MimeMessage(session);
 
@@ -239,20 +242,24 @@ public class EmailService {
 
         } catch (MessagingException e) {
             System.out.println("Failed to send email!");
-            throw new RuntimeException(e);
+            success = false;
         }
+
+        return success;
+
     }
 
-    public void sendVerificationEmail(String userFullName, String userEmail, String verificationCode) {
+    public boolean sendVerificationEmail(String userFullName, String userEmail, String verificationCode) {
 
         startConnection();
-        sendEmail(userEmail, "Verification for v.map", prepareVerificationEmailInHTML(userFullName, verificationCode));
+        boolean result = sendEmail(userEmail, "Verification for v.map", prepareVerificationEmailInHTML(userFullName, verificationCode));
         terminateConnection();
+        return result;
     }
 
     public static void main(String args[]) {
         EmailService email = new EmailService();
-        email.sendVerificationEmail("Ömer", "m.osmandonmezyurek@gmail.com", "JK46T");
+        boolean bool = email.sendVerificationEmail("Mert Dönmezyürek", "m.osmandonmezyurek@gmail.com", "JK46T");
     }
 
 }
