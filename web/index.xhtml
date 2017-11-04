@@ -39,8 +39,9 @@
              <h:form>
                  <p:remoteCommand name="sendCity" process="@this" update="DistrictFilter" action="#{filterView.setCity}"/>
                  <p:remoteCommand name="sendDistrict" process="@this"  action="#{filterView.setDistrict}"/>
+                 <p:remoteCommand name="sendDType" process="@this"  action="#{filterView.setType}"/>
              </h:form>
-             <p:panelGrid columns="3" cellpadding="1">
+             <p:panelGrid columns="4" cellpadding="1">
                  <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{filterView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
                      <f:selectItem itemLabel="Select City"  itemValue="" />
                      <f:selectItems value="#{filterView.cities}" var="city" itemValue="#{city}" />
@@ -51,6 +52,15 @@
                     <f:selectItems value="#{filterView.districts}" />
                     <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
                  </p:selectOneMenu>
+                 <p:selectOneMenu  id="TypeFilter" value="#{filterView.types}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                     <f:selectItem  itemLabel="Select Type" itemValue="" />
+                     <f:selectItems value="#{filterView.types}" />
+                     <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
+                 </p:selectOneMenu>
+                 <p:selectManyCheckbox id="basic" value="#{filterView.needDonation}">
+                     <f:selectItem itemLabel="Donation" itemValue="Donation" />
+                     <f:selectItem itemLabel="Need" itemValue="Need" />
+                 </p:selectManyCheckbox>
              </p:panelGrid>
          </p:layoutUnit>
          <p:layoutUnit position="east" size="400">

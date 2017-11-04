@@ -42,8 +42,9 @@ function initMap() {
 }
 
 function setWindowContext(map,marker) {
-     console.log(marker.id); // id
+     console.log(locations); // id
      clickedAnnouncementID = marker.id;
+     setWindowData(marker.id);
      var infoWindowContext = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
@@ -60,6 +61,11 @@ function setWindowContext(map,marker) {
     });
     infowindow.open(map, marker);
 }
+function setWindowData(id) {
+    title = locations[id].title;
+    city = locations[id].city;
+    district = locations[id].district;
+}
 function clickAnnouncement(id) {
     sendID([{name:'ID', value:id}]);
 }
@@ -70,6 +76,9 @@ function sendSelectedCity(scity) {
 function sendSelectedDistrict(sdistrict) {
     //console.log(sdistrict);
     sendDistrict([{name:'SelectedDistrict', value:sdistrict}]);
+}
+function sedSelectedType(stype) {
+    sendType([{name:'SelectedType', value:stype}]);
 }
 
 /*var locations = [

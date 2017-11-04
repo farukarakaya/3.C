@@ -14,9 +14,11 @@ import java.util.*;
 @SessionScoped
 public class FilterView {
     private String city ;
+    private String type;
     private String district;
     private List cities;
     private Map<String, List> districts;
+    private String[] needDonation = {"Donation","Need"};
 
     @PostConstruct
     public void init() {
@@ -216,4 +218,16 @@ public class FilterView {
     public List<String> getDistricts(){
        return  districts.get(city);
     }
+    public List<String> getTypes(){
+        List<String> types = new ArrayList<String>();
+        types.add("Education");
+        types.add("Food");
+        types.add("Clothes");
+        return  types;
+    }
+    public void setType(){
+        this.type = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("SelectedType");}
+
+    public String[] getNeedDonation(){ return needDonation;}
+    public void setNeedDonation(String[] needDonation){ this.needDonation = needDonation;}
 }
