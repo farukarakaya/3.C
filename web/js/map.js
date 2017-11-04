@@ -3,9 +3,9 @@
  */
 var locations;
 var clickedAnnouncementID;
-var title = 'dfrefr';
-var city = 'dfrfwrfw';
-var district ='wefds';
+var title ;
+var city ;
+var district;
 var infowindow = null; //Info Pop-up
 function getAnnouncements(locs) {
     locations = locs;
