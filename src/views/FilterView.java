@@ -227,7 +227,7 @@ public class FilterView {
     }
     public void setType(){
         this.typeSelected = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("SelectedType");}
-
+    public String getTypeSelected(){return typeSelected;}
     public void setTypeSelected(String typeSelected) {
         this.typeSelected = typeSelected;
     }
