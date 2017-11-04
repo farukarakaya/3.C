@@ -20,7 +20,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="weblib" level="project" />
-    <orderEntry type="library" name="javaee" level="project" />
-    <orderEntry type="library" name="mail" level="project" />
+    <orderEntry type="library" name="mailLib" level="project" />
   </component>
 </module>
