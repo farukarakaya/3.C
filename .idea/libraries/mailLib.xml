@@ -1,6 +1,7 @@
 <component name="libraryTable">
-  <library name="javaee">
+  <library name="mailLib">
     <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/mail.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javaee.jar!/" />
     </CLASSES>
     <JAVADOC />
