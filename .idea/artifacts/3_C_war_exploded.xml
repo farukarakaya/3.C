@@ -7,7 +7,7 @@
           <element id="module-output" name="3.C" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="lib" />
+          <element id="library" level="project" name="weblib" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="3.C/web/Web" />
