@@ -52,7 +52,7 @@
                     <f:selectItems value="#{filterView.districts}" />
                     <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
                  </p:selectOneMenu>
-                 <p:selectOneMenu  id="TypeFilter" value="#{filterView.types}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                 <p:selectOneMenu  id="TypeFilter" value="#{filterView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
                      <f:selectItem  itemLabel="Select Type" itemValue="" />
                      <f:selectItems value="#{filterView.types}" />
                      <p:ajax event="change" oncomplete="sendSelectedType(value)"/>

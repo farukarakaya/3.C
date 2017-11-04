@@ -14,7 +14,7 @@ import java.util.*;
 @SessionScoped
 public class FilterView {
     private String city ;
-    private String type;
+    private String typeSelected;
     private String district;
     private List cities;
     private Map<String, List> districts;
@@ -226,8 +226,11 @@ public class FilterView {
         return  types;
     }
     public void setType(){
-        this.type = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("SelectedType");}
+        this.typeSelected = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("SelectedType");}
 
+    public void setTypeSelected(String typeSelected) {
+        this.typeSelected = typeSelected;
+    }
     public String[] getNeedDonation(){ return needDonation;}
     public void setNeedDonation(String[] needDonation){ this.needDonation = needDonation;}
 }
