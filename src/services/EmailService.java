@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.Properties;
@@ -259,7 +260,7 @@ public class EmailService {
 
     public static void main(String args[]) {
         EmailService email = new EmailService();
-        boolean bool = email.sendVerificationEmail("Mert Dönmezyürek", "m.osmandonmezyurek@gmail.com", "JK46T");
+        boolean bool = email.sendVerificationEmail("Müc SA", "mfurkanyildiz7@gmail.com", "JK46T");
     }
 
 }

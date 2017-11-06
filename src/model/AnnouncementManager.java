@@ -24,7 +24,7 @@ public class AnnouncementManager {
         announcements = new ArrayList<>();
         for (int i = 0; i < size; i++){
             announcements.add(new Announcement(i,"Announcement"+i,"City"+i,"District"+i,
-                    "Category"+i, "Announcement"+i +"Detail","Announcement"+i +"ContactInfo" ,true,36+ Math.random()*6,26+ Math.random()*19));
+                    "Category"+i, "Announcement"+i +"Detail","Announcement"+i +"ContactInfo" ,true,36+ Math.random()*6,26+ Math.random()*19,i));
         }
         return announcements;
     }
