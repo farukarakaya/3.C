@@ -29,106 +29,151 @@ public class DatabaseManager {
     private SessionFactory sessionFactory;
 
     public DatabaseManager() {
-        Configuration cfg = new Configuration();
-        sessionFactory = cfg.configure("hibernate.cfg.xml").buildSessionFactory();
+        sessionFactory = new Configuration().configure().buildSessionFactory();
     }
 
     // gets the user as a parameter and stores it in database
     public boolean createUser(UserDetails user) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(user);
-        session.getTransaction().commit();
-        session.close();
-        return true;
-    }
-
-    public boolean deleteUser(int userId) {
-        UserDetails userToDelete = new UserDetails();
-        userToDelete.setId(userId);
-
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.delete(userToDelete);
-        session.getTransaction().commit();
-        session.close();
-        return true;
-    }
-
-    public UserDetails getUser(int userId) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        UserDetails user = session.get(UserDetails.class, userId);
-        session.getTransaction().commit();
-        session.close();
-
-        return user;
-    }
-
-    public UserDetails getUser(String email, String password) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-
-        Criteria criteria = session.createCriteria(UserDetails.class);
-        UserDetails user = (UserDetails) criteria.add(Restrictions.eq("email", email)).add(Restrictions.eq("password", password)).uniqueResult();
-        session.getTransaction().commit();
-        session.close();
-
-        return user;
-    }
-
-    public boolean createAnnouncement(Announcement announcement) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(announcement);
-        session.getTransaction().commit();
-        session.close();
-        return true;
-    }
-
-    public boolean deleteAnnouncement(int announcementId) {
-        Announcement announcementToDelete = new Announcement();
-        announcementToDelete.setId(announcementId);
-
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.delete(announcementToDelete);
-        session.getTransaction().commit();
-        session.close();
-        return true;
-    }
-
-    public List<Announcement> getAnnouncements() {
-        Session session = sessionFactory.openSession();
-        TypedQuery<Announcement> query =    session.createQuery("FROM Announcement");
-        List<Announcement> result = query.getResultList();
-        session.close();
-        return result;
-    }
-
-    public List<Announcement> getAnnouncements(int userId) {
-        Session session = sessionFactory.openSession();
-        TypedQuery<Announcement> query = session.createQuery("FROM Announcement");
-        List<Announcement> announcements = query.getResultList();
-        session.close();
-
-        for (Iterator<Announcement> iterator = announcements.iterator(); iterator.hasNext(); ) {
-            if (iterator.next().getUserId() != userId) {
-                iterator.remove();
-            }
+        try {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(user);
+            session.getTransaction().commit();
+            session.close();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        return announcements;
     }
 
+    // deletes the user from db
+    public boolean deleteUser(int userId) {
+        try {
+            UserDetails userToDelete = new UserDetails();
+            userToDelete.setId(userId);
+
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.delete(userToDelete);
+            session.getTransaction().commit();
+            session.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // returns the user by its id
+    public UserDetails getUser(int userId) {
+        try {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            UserDetails user = session.get(UserDetails.class, userId);
+            session.getTransaction().commit();
+            session.close();
+
+            return user;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // returns the user according to email and password
+    public UserDetails getUser(String email, String password) {
+        try {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+
+            Criteria criteria = session.createCriteria(UserDetails.class);
+            UserDetails user = (UserDetails) criteria.add(Restrictions.eq("email", email)).add(Restrictions.eq("password", password)).uniqueResult();
+            session.getTransaction().commit();
+            session.close();
+
+            return user;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // saves the announcement in db
+    public boolean createAnnouncement(Announcement announcement) {
+        try {
+            Session session = sessionFactory.openSession();
+
+            // save the announcement
+            session.beginTransaction();
+            session.save(announcement);
+            session.getTransaction().commit();
+
+            session.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // deletes an announcement by its id
+    public boolean deleteAnnouncement(int announcementId) {
+        try {
+            Announcement announcementToDelete;
+
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            announcementToDelete = session.load(Announcement.class, announcementId);
+            session.delete(announcementToDelete);
+            session.getTransaction().commit();
+            session.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // returns all announcements
+    public List<Announcement> getAnnouncements() {
+        try {
+            Session session = sessionFactory.openSession();
+            TypedQuery<Announcement> query = session.createQuery("FROM Announcement");
+            List<Announcement> result = query.getResultList();
+            session.close();
+            return result;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // returns the list of announcements related to the userid
+    public List<Announcement> getAnnouncements(int userId) {
+        try {
+            Session session = sessionFactory.openSession();
+            TypedQuery<Announcement> query = session.createQuery("FROM Announcement");
+            List<Announcement> announcements = query.getResultList();
+            session.close();
+
+            for (Iterator<Announcement> iterator = announcements.iterator(); iterator.hasNext(); ) {
+                if (iterator.next().getUserId() != userId) {
+                    iterator.remove();
+                }
+            }
+            return announcements;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // returns the announcement from db object by its id
     public Announcement getAnnouncementDetails(int announcementId) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        Announcement announcement = session.get(Announcement.class, announcementId);
-        session.getTransaction().commit();
-        session.close();
+        try {
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            Announcement announcement = session.get(Announcement.class, announcementId);
+            session.getTransaction().commit();
+            session.close();
 
-        return announcement;
+            return announcement;
+        } catch (Exception e) {
+            return null;
+        }
     }
-
-
 }
