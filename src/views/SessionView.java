@@ -7,5 +7,7 @@ import javax.faces.bean.ManagedBean;
  */
 @ManagedBean
 public class SessionView {
-    public boolean isLoggedIn(){return true;}
+    public boolean isAdmin(){return false;}
+    public boolean isUser(){return false;}
+    public boolean isGuest(){return true;}
 }

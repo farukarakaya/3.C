@@ -28,7 +28,7 @@ public class MapView {
     }
 
     public JsonElement getAnnouncementsMap(){
-        List<Announcement> announcements = dataSource.getAnnouncementsMap();
+        List<Announcement> announcements = dataSource.getAnnouncements();
         return gson.toJsonTree(announcements);
     }
     public void setAnnouncementToShow(){
