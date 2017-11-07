@@ -42,7 +42,7 @@ function initMap() {
 }
 
 function setWindowContext(map,marker) {
-     console.log(locations); // id
+     //console.log(locations); // id
      clickedAnnouncementID = marker.id;
      setWindowData(marker.id);
      var infoWindowContext = '<div id="content">'+
@@ -62,6 +62,9 @@ function setWindowContext(map,marker) {
     infowindow.open(map, marker);
 }
 function setWindowData(id) {
+    console.log(id);
+    console.log(locations)
+    console.log(locations[id]);
     title = locations[id].title;
     city = locations[id].city;
     district = locations[id].district;

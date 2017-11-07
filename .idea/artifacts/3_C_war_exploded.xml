@@ -6,7 +6,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="3.C" />
         </element>
-        <element id="directory" name="lib" />
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="JSF" />
+          <element id="library" level="project" name="database" />
+          <element id="library" level="project" name="mail" />
+        </element>
       </element>
       <element id="javaee-facet-resources" facet="3.C/web/Web" />
     </root>

@@ -22,7 +22,7 @@ public class Position{
         lat = 0;
         lng = 0;
     }
-    public Position(double lng, double lat){
+    public Position(double lat, double lng){
         this.lat= lat;
         this.lng=lng;
     }
