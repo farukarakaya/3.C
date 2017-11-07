@@ -18,18 +18,15 @@ public class UserDetails {
     private int id;
     private String fullName;
     private String email;
-    @ElementCollection
-    private Collection<Integer> announcementIdList = new ArrayList<Integer>();
     private String password;
     private boolean isAdmin;
 
     public UserDetails() {}
 
-    public UserDetails(int id, String fullName, String email, Collection<Integer> announcementIdList, String password, boolean isAdmin) {
+    public UserDetails(int id, String fullName, String email, String password, boolean isAdmin) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
-        this.announcementIdList = announcementIdList;
         this.password = password;
         this.isAdmin = isAdmin;
     }
@@ -51,12 +48,6 @@ public class UserDetails {
     }
     public void setEmail(String email) {
         this.email = email;
-    }
-    public Collection<Integer> getAnnouncementIdList() {
-        return announcementIdList;
-    }
-    public void setAnnouncementIdList(Collection<Integer> announcementIdList) {
-        this.announcementIdList = announcementIdList;
     }
     public String getPassword() {
         return password;
