@@ -21,19 +21,36 @@
 
      <h:body>
       <p:layout fullPage="true">
-         <p:layoutUnit position="north"  size="250"  >
+         <p:layoutUnit position="north"  size="200"  >
              <p:graphicImage value="images/banner.png" style="float: left; width: 80%" />
              <p:outputPanel style="float: right">
                  <h:form>
-                 <p:menu value="Options" rendered="#{sessionView.loggedIn}">
-                     <p:menuitem value="Update" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
-                     <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
-                     <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
-                     <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
-                     <p:menuitem value="Delete" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
-                     <p:separator/>
-                     <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
-                 </p:menu>
+                     <p:menu value="Options" rendered="#{sessionView.admin}">
+                         <p:menuitem value="Manage Your Entries" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
+                         <p:menuitem value="Submit New" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                         <p:menuitem value="Account Settings" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                         <p:menuitem value="Manage Users" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                         <p:separator/>
+                         <p:menuitem value="Sign Out" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+                     </p:menu>
+                     <p:menu value="Options" rendered="#{sessionView.user}">
+                         <p:menuitem value="Manage Your Entries" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
+                         <p:menuitem value="Submit New" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                         <p:menuitem value="Account Settings" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                         <p:separator/>
+                         <p:menuitem value="Sign Out" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+                     </p:menu>
+                     <p:panelGrid columns="2" cellpadding="0" rendered="#{sessionView.guest}">
+                        <h:outputLabel value="email:"/>
+                        <p:inputText/>
+                         <h:outputLabel value="password:"/>
+                         <p:password id="nonFeedback" value="#{menuView.password}" />
+                         <p:commandButton value="Sign In" id="signin" actionListener="#{menuView.signIn}" styleClass="ui-priority-primary" />
+                         <h:panelGrid columns="3">
+                             <h:outputLabel value="or you can"/>
+                             <p:spacer width="15"/>
+                             <p:commandButton value="Log In" id="login" actionListener="#{menuView.signIn}" styleClass="ui-priority-primary" /></h:panelGrid>
+                        </p:panelGrid>
                  </h:form>
              </p:outputPanel>
              <h:form>
@@ -65,7 +82,7 @@
          </p:layoutUnit>
          <p:layoutUnit position="east" size="400">
                  <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
-                                 scrollHeight="400">
+                                 scrollHeight="450">
                      <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                          <p:graphicImage value="images/embed2.jpg" width="120" height="100"/>
                          <p:outputPanel>
@@ -98,7 +115,7 @@
                      <p:graphicImage value="images/embed2.jpg" width="240" height="200" style="float: left"/>
                      <h:panelGrid columns="1" style="margin-bottom:10px; float: left" cellpadding="5">
                          <h:outputText value="#{mapView.getAnnouncememtByID().detail}" style="font-weight: mormal"/>
-                         <h:outputText rendered="#{sessionView.loggedIn}" value="#{mapView.getAnnouncememtByID().contactInfo}" style="font-weight: mormal"/>
+                         <h:outputText rendered="#{sessionView.user}" value="#{mapView.getAnnouncememtByID().contactInfo}" style="font-weight: mormal"/>
                      </h:panelGrid>
                  </p:dialog>
              </div>

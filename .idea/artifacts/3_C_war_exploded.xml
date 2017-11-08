@@ -9,7 +9,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="JSF" />
           <element id="library" level="project" name="database" />
-          <element id="library" level="project" name="mail" />
+          <element id="library" level="project" name="emailserver" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="3.C/web/Web" />
