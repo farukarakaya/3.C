@@ -28,10 +28,10 @@ public class AnnouncementManager {
     public static void main(String []args){
         DatabaseManager databaseManager = new DatabaseManager();
 
-        for (int i = 0; i < 500; i++){
-            //databaseManager.createAnnouncement(new Announcement(i,"Announcement"+i,"City"+i,"District"+i,
-            //        "Category"+i, "Announcement"+i +"Detail","Announcement"+i +"ContactInfo" ,true,36+ Math.random()*6,26+ Math.random()*19,i));
-            databaseManager.deleteAnnouncement(i);
+        for (int i = 1; i < 500; i++){
+            databaseManager.createAnnouncement(new Announcement(i,"Announcement"+i,"City"+i,"District"+i,
+                    "Category"+i, "Announcement"+i +"Detail","Announcement"+i +"ContactInfo" ,true,36+ Math.random()*6,26+ Math.random()*19,i));
+            //databaseManager.deleteAnnouncement(i);
         }
     }
 }

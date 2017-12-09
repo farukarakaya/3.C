@@ -15,7 +15,7 @@ public class Test {
         ArrayList<Integer> list1 = new ArrayList<Integer>();
         //list1.add(1);
         //list1.add(2);
-        user1.setAnnouncementIdList(list1);
+        //user1.setAnnouncementIdList(list1);
         //user1.setId(3);
         user1.setEmail("email1");
         user1.setPassword("password1");
@@ -25,7 +25,7 @@ public class Test {
         ArrayList<Integer> list2 = new ArrayList<Integer>();
         //list2.add(3);
         //list2.add(4);
-        user2.setAnnouncementIdList(list2);
+        //user2.setAnnouncementIdList(list2);
         //user2.setId(4);
         user2.setEmail("email2");
         user2.setPassword("password2");
