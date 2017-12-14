@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -19,38 +20,39 @@
        <script type="text/javascript" src="js/map.js"/>
    </h:head>
 
-     <h:body>
+     <h:body >
       <p:layout fullPage="true">
          <p:layoutUnit position="north"  size="200"  >
              <p:graphicImage value="images/banner.png" style="float: left; width: 80%" />
-             <p:outputPanel style="float: right">
+             <p:outputPanel id="menuPanel" style="float: right">
                  <h:form>
                      <p:menu value="Options" rendered="#{sessionView.admin}">
-                         <p:menuitem value="Manage Your Entries" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
-                         <p:menuitem value="Submit New" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
-                         <p:menuitem value="Account Settings" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
-                         <p:menuitem value="Manage Users" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                         <p:menuitem value="Manage Your Entries" oncomplete="PF('announcementPopup').show()" icon="ui-icon-arrowrefresh-1-w"/>
+                         <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()"  icon="ui-icon-close"/>
+                         <p:menuitem value="Account Settings" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
+                         <p:menuitem value="Manage Users" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
                          <p:separator/>
                          <p:menuitem value="Sign Out" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
                      </p:menu>
                      <p:menu value="Options" rendered="#{sessionView.user}">
                          <p:menuitem value="Manage Your Entries" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
-                         <p:menuitem value="Submit New" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                         <p:menuitem value="Submit New" actionListener="PF('submitNew').show();" ajax="false" icon="ui-icon-close"/>
                          <p:menuitem value="Account Settings" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
                          <p:separator/>
                          <p:menuitem value="Sign Out" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
                      </p:menu>
                      <p:panelGrid columns="2" cellpadding="0" rendered="#{sessionView.guest}">
                         <h:outputLabel value="email:"/>
-                        <p:inputText/>
+                        <p:inputText value="#{menuView.email}" />
                          <h:outputLabel value="password:"/>
                          <p:password id="nonFeedback" value="#{menuView.password}" />
-                         <p:commandButton value="Sign In" id="signin" actionListener="#{menuView.signIn}" styleClass="ui-priority-primary" />
+                         <p:commandButton value="Log In" id="Login" actionListener="#{menuView.logIn}" update="menuPanel" styleClass="ui-priority-primary" />
                          <h:panelGrid columns="3">
                              <h:outputLabel value="or you can"/>
                              <p:spacer width="15"/>
-                             <p:commandButton value="Log In" id="login" actionListener="#{menuView.signIn}" styleClass="ui-priority-primary" /></h:panelGrid>
+                             <p:commandButton value="Sıgn In" id="signin" actionListener="#{menuView.logIn}" styleClass="ui-priority-primary" /></h:panelGrid>
                         </p:panelGrid>
+
                  </h:form>
              </p:outputPanel>
              <h:form>
@@ -121,7 +123,117 @@
              </div>
          </p:layoutUnit>
          <p:layoutUnit position="south" size="50">
-              Bottom
+
+             <p:dialog header="Sumnit New Announcement" id="submitNew" widgetVar="submitNew"  style="min-width: 800px; min-height: 600px;"
+                       showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,50" >
+                 <h:form id="submitFirstTab" prependId="false">
+                 <p:accordionPanel id="sumbitNewAcordion" widgetVar="sumbitNewAcordion">
+                     <p:tab title="General İnformation">
+
+                             <p:remoteCommand name="sendCity" process="@this" update="districtsubmit,sumbitGInfButton" action="#{createAnnouncementView.setCity}"/>
+                             <p:remoteCommand name="sendDistrict" process="@this" update="address,sumbitGInfButton" action="#{createAnnouncementView.setDistrict}"/>
+                             <p:remoteCommand name="sendType" process="@this"  update="sumbitGInfButton" action="#{createAnnouncementView.setType}"/>
+                             <p:remoteCommand name="sendNeedDonation" process="@this"  update="sumbitGInfButton,verifyAdress" action="#{createAnnouncementView.setNeedDonation}"/>
+                             <p:remoteCommand name="SendAddress" process="@this"  update="sumbitGInfButton" action="#{createAnnouncementView.setAddress}"/>
+                             <p:remoteCommand name="SendTitle" process="@this"  update="sumbitGInfButton" action="#{createAnnouncementView.setTitle}"/>
+                             <h:panelGrid columns="2" cellpadding="1">
+                                 <h:panelGrid columns="2" cellpadding="1">
+                                     <h:outputLabel for="title" value="Title" />
+                                     <p:inputText id="title" value="#{createAnnouncementView.title}" label="Title">
+                                         <p:ajax event="change" oncomplete="sendtitle(value)"/>
+                                     </p:inputText>
+                                     <h:outputLabel for="citysubmit" value="City" />
+                                     <p:selectOneMenu id="citysubmit" widgetVar="citysubmit" value="#{createAnnouncementView.city}"
+                                                      required="true" requiredMessage="This value is required." style="width:125px" filter="true" filterMatchMode="startsWith">
+                                         <f:selectItem itemLabel="Select City"  itemValue="" />
+                                         <f:selectItems value="#{createAnnouncementView.cities}" var="city" itemValue="#{city}" />
+                                         <p:ajax event="change" oncomplete="sendSelectedCity(value)"/>
+                                     </p:selectOneMenu>
+                                     <h:outputLabel for="citysubmit" value="District" />
+                                     <p:selectOneMenu disabled="#{createAnnouncementView.citySelected}" id="districtsubmit" widgetVar="districtsubmit" value="#{createAnnouncementView.district}"
+                                                      filter="true" filterMatchMode="startsWith"  required="true" requiredMessage="This value is required." style="width:125px">
+                                         <f:selectItem  itemLabel="Select District" itemValue="" />
+                                         <f:selectItems value="#{createAnnouncementView.districts}" />
+                                         <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
+                                     </p:selectOneMenu>
+                                     <h:outputLabel for="address" value="Address" />
+                                     <p:inputTextarea disabled="#{createAnnouncementView.districtSelected}" id="address" widgetVar="address" value="#{createAnnouncementView.address}" label="Address">
+                                         <p:ajax event="change" oncomplete="sendAdress(value)"/>
+                                     </p:inputTextarea>
+                                     <h:outputLabel for="typesumbit" value="Category" />
+                                     <p:selectOneMenu  id="typesumbit" value="#{createAnnouncementView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                                         <f:selectItem  itemLabel="Select Type" itemValue="" />
+                                         <f:selectItems value="#{createAnnouncementView.types}" />
+                                         <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
+                                     </p:selectOneMenu>
+                                     <h:outputLabel for="checbox" value="Need Or Donation" />
+                                     <p:selectOneRadio id="checbox" value="#{createAnnouncementView.needDonation}">
+                                         <f:selectItem itemLabel="Donation" itemValue="Donation" />
+                                         <f:selectItem itemLabel="Need" itemValue="Need" />
+                                         <p:ajax event="change" oncomplete="sendND(value)"/>
+                                     </p:selectOneRadio>
+                                     <p:commandButton disabled="#{createAnnouncementView.button1Active}" id="sumbitGInfButton" value="submitGeneralInfo"  update="@this" onclick="geocode()"
+                                                      validateClient="true" style="margin-top:10px;" />
+                                 </h:panelGrid>
+                                 <h:panelGrid columns="1" cellpadding="1" id="verifyPanel" widgetwar="verifyPanel">
+                                     <h:outputLabel for="geoMap" value="Verify Address" />
+                                     <p:gmap id="geoMap" widgetVar="geoMap" center="#{createAnnouncementView.centerGeoMap}"  zoom="15" type="HYBRID"  model="#{createAnnouncementView.geoModel}" style="width:300px;height:300px">
+                                         <p:ajax event="geocode" listener="#{createAnnouncementView.onGeocode}" update="@this" />
+                                         <p:ajax event="markerDrag" listener="#{createAnnouncementView.onMarkerDrag}"  />
+                                     </p:gmap>
+                                     <p:commandButton disabled="#{createAnnouncementView.button1Active}" id="verifyAdress" value="verify Adress" update="@this" onclick="PF('sumbitNewAcordion').select(2)"
+                                                      style="margin-top:10px;" />
+                                 </h:panelGrid>
+                             </h:panelGrid>
+                     </p:tab>
+                     <p:tab title="Description and Contact Information" >
+                         <h:panelGrid columns="1" cellpadding="0">
+                             <h:outputText value="Enter Descirption" />
+                             <p:textEditor widgetVar="deciriptionEditor" value="#{createAnnouncementView.desciription}" height="100" style=" width:692px; margin-bottom:10px">
+                                 <f:facet name="toolbar">
+                                     <span class="ql-formats">
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-underline"></button>
+                                        <button class="ql-strike"></button>
+                                    </span>
+                                                             <span class="ql-formats">
+                                        <select class="ql-font"></select>
+                                        <select class="ql-size"></select>
+                                    </span>
+                                 </f:facet>
+                             </p:textEditor>
+                             <h:outputText value="Enter Contact Information" />
+                             <p:textEditor widgetVar="ContactInfoEditor" value="#{createAnnouncementView.contactInfo}" height="100" style=" margin-bottom:10px">
+                                 <f:facet name="toolbar">
+                                     <span class="ql-formats">
+                                        <button class="ql-bold"></button>
+                                        <button class="ql-italic"></button>
+                                        <button class="ql-underline"></button>
+                                        <button class="ql-strike"></button>
+                                    </span>
+                                                             <span class="ql-formats">
+                                        <select class="ql-font"></select>
+                                        <select class="ql-size"></select>
+                                    </span>
+                                 </f:facet>
+                             </p:textEditor>
+                             <p:commandButton  id="submitDesConInf" value="Submit"  update="@this" onclick="PF('sumbitNewAcordion').select(2)"
+                                               validateClient="true" style="margin-top:10px;" />
+                         </h:panelGrid>
+                     </p:tab>
+                     <p:tab title="Photo">
+                         <h:panelGrid columns="2" cellpadding="1">
+                             <p:fileUpload value="#{createAnnouncementView.file}" mode="simple" skinSimple="true"/>
+
+                             <p:commandButton value="Submit" ajax="false" actionListener="#{createAnnouncementView.upload}" disabled="true" />
+
+                             <p:graphicImage rendered="false" name="demo/images/crop/#{cropperView.newImageName}.jpg" />
+                         </h:panelGrid>
+                     </p:tab>
+                 </p:accordionPanel>
+             </h:form>
+             </p:dialog>
          </p:layoutUnit>
       </p:layout>
      </h:body>

@@ -7,6 +7,7 @@ var title ;
 var city ;
 var district;
 var infowindow = null; //Info Pop-up
+var geocity,geodistrict,geoaddress;
 function getAnnouncements(locs) {
     locations = locs;
 }
@@ -75,41 +76,39 @@ function clickAnnouncement(id) {
 function sendSelectedCity(scity) {
     //console.log(scity);
     sendCity([{name:'SelectedCity', value:scity}]);
+    geocity = scity;
 }
 function sendSelectedDistrict(sdistrict) {
     //console.log(sdistrict);
     sendDistrict([{name:'SelectedDistrict', value:sdistrict}]);
+    geodistrict = sdistrict;
 }
-function sedSelectedType(stype) {
+function sendSelectedType(stype) {
     sendType([{name:'SelectedType', value:stype}]);
 }
+function sendND(needDonation) {
+    sendNeedDonation([{name:'NeedDonation', value:needDonation}]);
+}
+function sendAdress(address) {
+    console.log(address);
+    geoaddress = address;
+    SendAddress([{name:'Address', value:address}]);
+}
+function sendtitle(title) {
+    console.log(title);
+    SendTitle([{name:'Title', value:title}]);
+}
+function tab() {
+    PF('sumbitNewAcordion').select(2);
+}
+function geocode() {
+    console.log(geoaddress);
+    var wholeAdress = "Türkiye " +geodistrict + " " + geocity + " " + geoaddress;
+    console.log(wholeAdress);
+    PF('geoMap').geocode(wholeAdress);
+}
 
-/*var locations = [
-    {id: 0,pos:{lat: -31.563910, lng: 147.154312}},
-    {id: 1,pos:{lat: -33.718234, lng: 150.363181}},
-    {id: 2,pos:{lat: -33.727111, lng: 150.371124}},
-    {id: 3,pos:{lat: -33.848588, lng: 151.209834}},
-    {id: 4,pos:{lat: -33.851702, lng: 151.216968}},
-    {id: 5,pos:{lat: -34.671264, lng: 150.863657}},
-    {id: 6,pos:{lat: -35.304724, lng: 148.662905}},
-    {id: 7,pos:{lat: -36.817685, lng: 175.699196}},
-    {id: 8,pos:{lat: -36.828611, lng: 175.790222}},
-    {id: 9,pos:{lat: -37.750000, lng: 145.116667}},
-    {id: 10,pos:{lat: -37.759859, lng: 145.128708}},
-    {id: 11,pos:{lat: -37.765015, lng: 145.133858}},
-    {id: 12,pos:{lat: -37.770104, lng: 145.143299}},
-    {id: 13,pos:{lat: -37.773700, lng: 145.145187}},
-    {id: 14,pos:{lat: -37.774785, lng: 145.137978}},
-    {id: 15,pos:{lat: -37.819616, lng: 144.968119}},
-    {id: 16,pos:{lat: -38.330766, lng: 144.695692}},
-    {id: 17,pos:{lat: -39.927193, lng: 175.053218}},
-    {id: 18,pos:{lat: -41.330162, lng: 174.865694}},
-    {id: 19,pos:{lat: -42.734358, lng: 147.439506}},
-    {id: 20,pos:{lat: -42.734358, lng: 147.501315}},
-    {id: 21,pos:{lat: -42.735258, lng: 147.438000}},
-    {id: 22,pos:{lat: -43.999792, lng: 170.463352}}
-    ]
-
+/*PF('sumbitNewAcordion').select(1);
  '+
  '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
  'sandstone rock formation in the southern part of the '+

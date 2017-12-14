@@ -7,23 +7,18 @@ import dao.*;
 public class SessionManager {
     //Attributes
     private String verificationCode;
-    private UserDetails userTemp;
+    private UserDetails user = null;
     private UserManager userManager;
     private DatabaseManager dbManager;
     private EmailService email;
     //Constructor
     public SessionManager(){
-        userTemp = new UserDetails();
         dbManager = new DatabaseManager();
     }
 
     //Methods
-    public UserDetails getUserDetails(int userID){
-        userTemp = dbManager.getUser(userID);
-        if (userTemp == null)
-            return null;
-        else
-            return userTemp;
+    public UserDetails getUser(){
+        return user;
     }
 
     public String createVCode(){
@@ -35,24 +30,33 @@ public class SessionManager {
 
     public boolean sendVmail(String verificationCode) {
         email = new EmailService();
-        return email.sendVerificationEmail(userTemp.getFullName(),userTemp.getEmail(),verificationCode);
+        return email.sendVerificationEmail(user.getFullName(), user.getEmail(),verificationCode);
     }
 
-    public boolean signUp(UserDetails userTemp){
-        this.userTemp = userTemp;
+    public void signUp(UserDetails userTemp){
         String verifyCode = createVCode();
-        return sendVmail(verifyCode);
+        sendVmail(verifyCode);
     }
 
-    public boolean signIn(String fullName, String password){
-        UserDetails check = dbManager.getUser(userTemp.getEmail(), userTemp.getPassword());
-        if(check == null) {
+    public boolean signIn(String email, String password){
+        try {
+            user = dbManager.getUser( email, password);
+        }catch (Exception e){
             return false;
         }
-        else {
-            userTemp = check;
+        System.out.println("Log In Succesfull");
+        return true;
+    }
+    public boolean logOut(){
+        if(true) {
+            user = null;
             return true;
         }
+        else
+            return false;
+    }
+    public boolean isAdmin(){
+        return user.isAdmin();
     }
 
     public boolean verify(String vCode){
