@@ -40,10 +40,7 @@ public class SessionView {
         return false;
     }
     public boolean isGuest(){
-        if(session == null)
-            return true;
-        else
-            return false;
+        return (session == null);
     }
     public boolean logIn(){
         UserDetails user = DatabaseManager.getUser(email,password);

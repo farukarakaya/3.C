@@ -35,17 +35,35 @@ public class DatabaseManager {
     // gets the user as a parameter and stores it in database
     public static boolean createUser(UserDetails user) {
         try {
-            Session session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.save(user);
-            session.getTransaction().commit();
-            session.close();
-            return true;
+                Session session = sessionFactory.openSession();
+                session.beginTransaction();
+                session.save(user);
+                session.getTransaction().commit();
+                session.close();
+                return true;
         } catch (Exception e) {
             return false;
         }
     }
 
+    // private function for checking if the user with this email exists
+    // traverses the database and compares the emails
+    public static boolean userExists(String email) {
+            try {
+                Session session = sessionFactory.openSession();
+                session.beginTransaction();
+
+                Criteria criteria = session.createCriteria(UserDetails.class);
+                UserDetails user = (UserDetails) criteria.add(Restrictions.eq("email", email)).uniqueResult();
+                session.getTransaction().commit();
+                session.close();
+
+                return (user != null);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+    }
     // deletes the user from db
     public static boolean deleteUser(int userId) {
         try {

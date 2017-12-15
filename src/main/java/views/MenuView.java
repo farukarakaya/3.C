@@ -65,12 +65,19 @@ public class MenuView {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
-    public void singIn(){
-        sigIn = false;
-        int rand = (int)(Math.random()*99999);
-        vcodeCreated = ""+ rand;
-        EmailService emailService = new EmailService();
-        emailService.sendVerificationEmail(fullName,email,vcodeCreated);
+
+    // sign up if there is no user with this email in the database
+    public void singUp(){
+        if ( !DatabaseManager.userExists(email)) {
+            sigIn = false;
+            int rand = (int) (Math.random() * 99999);
+            vcodeCreated = "" + rand;
+            EmailService emailService = new EmailService();
+            emailService.sendVerificationEmail(fullName, email, vcodeCreated);
+        } else {
+            // todo if there is a user with this email prompt the user
+            System.out.println("THIS EMAIL HAS BEEN USED BEFORE");
+        }
     }
     public boolean isSignedIn1(){
         return sigIn;

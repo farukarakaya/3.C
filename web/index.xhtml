@@ -222,7 +222,7 @@
                          <p:password id="password1" value="#{menuView.password}" match="password2" required="true"/>
                          <p:outputLabel value="Confirm Password"/>
                          <p:password id="password2" value="#{menuView.cPassword}" required="true"/>
-                         <p:commandButton value="Sign In" update="signInForm" actionListener="#{menuView.singIn}" />
+                         <p:commandButton value="Sign In" update="signInForm" actionListener="#{menuView.singUp}" />
                      </p:panelGrid>
                      <p:outputLabel rendered="#{menuView.signedIn2}" value="Please Enter Your Verification Code That Sent Your Email"/>
                      <p:panelGrid columns="3" cellPadding="0" rendered="#{menuView.signedIn2}">
