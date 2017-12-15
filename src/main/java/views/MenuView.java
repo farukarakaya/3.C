@@ -70,7 +70,7 @@ public class MenuView {
         int rand = (int)(Math.random()*99999);
         vcodeCreated = ""+ rand;
         EmailService emailService = new EmailService();
-        emailService.sendVerificationEmail(fullName,email,vcode);
+        emailService.sendVerificationEmail(fullName,email,vcodeCreated);
     }
     public boolean isSignedIn1(){
         return sigIn;
@@ -82,11 +82,21 @@ public class MenuView {
         if (vcodeCreated.equals(vcode)) {
             UserDetails user = new UserDetails(fullName, email, password, false);
             DatabaseManager.createUser(user);
+            clean();
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
             } catch (Exception e) {
             }
         }
+    }
+    public void clean(){
+        fullName ="";
+        email ="";
+        password ="";
+        cPassword ="";
+        sigIn = true;
+        vcode = null;
+        vcodeCreated = null;
     }
 }
 

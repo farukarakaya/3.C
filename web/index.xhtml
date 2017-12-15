@@ -36,7 +36,7 @@
                      </p:menu>
                      <p:menu value="Options" rendered="#{sessionView.user}">
                          <p:menuitem value="Manage Your Entries" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
-                         <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()" ajax="false" icon="ui-icon-close"/>
+                         <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()" icon="ui-icon-close"/>
                          <p:menuitem value="Account Settings" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
                          <p:separator/>
                          <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
@@ -55,30 +55,31 @@
                  </h:form>
              </p:outputPanel>
              <h:form>
-                 <p:remoteCommand name="sendCity" process="@this" update="DistrictFilter" action="#{filterView.setCity}"/>
-                 <p:remoteCommand name="sendDistrict" process="@this"  action="#{filterView.setDistrict}"/>
-                 <p:remoteCommand name="sendDType" process="@this"  action="#{filterView.setType}"/>
+                 <p:remoteCommand name="sendCity" process="@this" update="DistrictFilter" action="#{mapView.setCity}"/>
+                 <p:remoteCommand name="sendDistrict" process="@this"  action="#{mapView.setDistrict}"/>
+                 <p:remoteCommand name="sendType" process="@this"  action="#{mapView.setType}"/>
              </h:form>
-             <p:panelGrid columns="4" cellpadding="1">
-                 <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{filterView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
+             <p:panelGrid columns="5" cellpadding="1">
+                 <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{mapView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
                      <f:selectItem itemLabel="Select City"  itemValue="" />
-                     <f:selectItems value="#{filterView.cities}" var="city" itemValue="#{city}" />
+                     <f:selectItems value="#{mapView.cities}" var="city" itemValue="#{city}" />
                      <p:ajax event="change" oncomplete="sendSelectedCity(value)"/>
                  </p:selectOneMenu>
-                 <p:selectOneMenu disabled="#{filterView.citySelected}" id="DistrictFilter" value="#{filterView.district}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                 <p:selectOneMenu disabled="#{mapView.citySelected}" id="DistrictFilter" value="#{mapView.district}" filter="true" filterMatchMode="startsWith" style="width:125px">
                     <f:selectItem  itemLabel="Select District" itemValue="" />
-                    <f:selectItems value="#{filterView.districts}" />
+                    <f:selectItems value="#{mapView.districts}" />
                     <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
                  </p:selectOneMenu>
-                 <p:selectOneMenu  id="TypeFilter" value="#{filterView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                 <p:selectOneMenu  id="TypeFilter" value="#{mapView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
                      <f:selectItem  itemLabel="Select Type" itemValue="" />
-                     <f:selectItems value="#{filterView.types}" />
+                     <f:selectItems value="#{mapView.types}" />
                      <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
                  </p:selectOneMenu>
-                 <p:selectManyCheckbox id="basic" value="#{filterView.needDonation}">
+                 <p:selectManyCheckbox id="basic" value="#{mapView.needDonation}">
                      <f:selectItem itemLabel="Donation" itemValue="Donation" />
                      <f:selectItem itemLabel="Need" itemValue="Need" />
                  </p:selectManyCheckbox>
+                 <p:commandButton id="fiterButton" value="Filter"/>
              </p:panelGrid>
          </p:layoutUnit>
          <p:layoutUnit position="east" id="east" size="400">
@@ -211,7 +212,7 @@
              <p:dialog header="Sıgn In" id="signInPopup" widgetVar="signInPopup"
                        showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
                  <p:messages id="messages" showDetail="true" autoUpdate="true" />
-                 <h:form prependId="false">
+                 <h:form id="signInForm" prependId="false">
                      <p:panelGrid rendered="#{menuView.signedIn1}" id="SignInGrid" columns="2" cellpadding="1">
                          <p:outputLabel value="Full Name"/>
                          <p:inputText value="#{menuView.fullName}" required="true" />
@@ -221,12 +222,13 @@
                          <p:password id="password1" value="#{menuView.password}" match="password2" required="true"/>
                          <p:outputLabel value="Confirm Password"/>
                          <p:password id="password2" value="#{menuView.cPassword}" required="true"/>
-                         <p:commandButton value="Sign In" update="@this" actionListener="#{menuView.singIn}" />
+                         <p:commandButton value="Sign In" update="signInForm" actionListener="#{menuView.singIn}" />
                      </p:panelGrid>
-                     <p:panelGrid columns="2" rendered="#{menuView.signedIn2}">
-                         <p:outputLabel value="Please Enter Your Verification Code That Sent Your Email"/>
+                     <p:outputLabel rendered="#{menuView.signedIn2}" value="Please Enter Your Verification Code That Sent Your Email"/>
+                     <p:panelGrid columns="3" cellPadding="0" rendered="#{menuView.signedIn2}">
+                         <p:outputLabel value="vcode: "/>
                          <p:inputText value="#{menuView.vcode}" required="true" />
-                         <p:commandButton value="Sign In" update="@this" actionListener="#{menuView.verify}"/>
+                         <p:commandButton value="Sign In" update="@this" actionListener="#{menuView.validate}"/>
                      </p:panelGrid>
                  </h:form>
              </p:dialog>
