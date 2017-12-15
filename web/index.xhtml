@@ -23,8 +23,8 @@
      <h:body >
       <p:layout fullPage="true">
          <p:layoutUnit position="north"  size="200"  >
-             <p:graphicImage value="images/banner.png" style="float: left; width: 80%" />
-             <p:outputPanel id="menuPanel" style="float: right">
+             <p:graphicImage value="images/vmap_banner.png" style="float: left; width: 80%; height: 145px;" />
+             <p:outputPanel id="menuPanel" style="float: right;width: 20%">
                  <h:form>
                      <p:menu value="Options" rendered="#{sessionView.admin}">
                          <p:menuitem value="Manage Your Entries" oncomplete="PF('announcementPopup').show()" icon="ui-icon-arrowrefresh-1-w"/>
@@ -59,7 +59,7 @@
                  <p:remoteCommand name="sendDistrict" process="@this"  action="#{mapView.setDistrict}"/>
                  <p:remoteCommand name="sendType" process="@this"  action="#{mapView.setType}"/>
              </h:form>
-             <p:panelGrid columns="5" cellpadding="1">
+             <p:panelGrid columns="8" cellpadding="1">
                  <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{mapView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
                      <f:selectItem itemLabel="Select City"  itemValue="" />
                      <f:selectItems value="#{mapView.cities}" var="city" itemValue="#{city}" />
@@ -75,11 +75,11 @@
                      <f:selectItems value="#{mapView.types}" />
                      <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
                  </p:selectOneMenu>
-                 <p:selectManyCheckbox id="basic" value="#{mapView.needDonation}">
-                     <f:selectItem itemLabel="Donation" itemValue="Donation" />
-                     <f:selectItem itemLabel="Need" itemValue="Need" />
-                 </p:selectManyCheckbox>
-                 <p:commandButton id="fiterButton" value="Filter"/>
+                 <h:outputText value ="Need"/>
+                 <p:selectBooleanCheckbox value="#{mapView.need}" />
+                 <h:outputText value ="Donation"/>
+                 <p:selectBooleanCheckbox value="#{mapView.donation}" />
+                 <p:commandButton id="filterButton" value="Filter"  actionListener="#{mapView.filter}" />
              </p:panelGrid>
          </p:layoutUnit>
          <p:layoutUnit position="east" id="east" size="400">

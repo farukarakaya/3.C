@@ -9,8 +9,10 @@ import model.Cities;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.webapp.FacesServlet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +20,18 @@ import java.util.List;
  * Created by ofk on 10/24/17.
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class MapView {
     AnnouncementManager dataSource;
     Gson gson = new Gson();
     int announcementToShow;
-    private String city ;
-    private String typeSelected;
-    private String district;
-    private String[] needDonation = {"Donation","Need"};;
+    private String city = null;
+    private String typeSelected = null;
+    private String district = null;
+    private boolean need =true;
+    private boolean donation = true;
     private Cities cities;
+    List<Announcement> announcements = AnnouncementManager.getAnnouncements();
     @PostConstruct
     public void init() {
         dataSource = new AnnouncementManager();
@@ -35,7 +39,6 @@ public class MapView {
     }
 
     public JsonElement getAnnouncementsMap(){
-        List<Announcement> announcements = dataSource.getAnnouncements();
         return gson.toJsonTree(announcements);
     }
     public void setAnnouncementToShow(){
@@ -81,7 +84,43 @@ public class MapView {
     public void setTypeSelected(String typeSelected) {
         this.typeSelected = typeSelected;
     }
-    public String[] getNeedDonation(){ return needDonation;}
-    public void setNeedDonation(String[] needDonation){ this.needDonation = needDonation;}
 
+    public boolean isDonation() {
+        return donation;
+    }
+
+    public boolean isNeed() {
+        return need;
+    }
+
+    public void setDonation(boolean donation) {
+        this.donation = donation;
+    }
+
+    public void setNeed(boolean need) {
+        this.need = need;
+    }
+
+    public void filter(){
+        announcements = dataSource.getAnnouncements();
+        List<Announcement> filteredannouncemnets = new ArrayList<Announcement>();
+        for (int i= 0; i < announcements.size(); i++){
+            if(city == null || announcements.get(i).getCity().equals(city))
+                if(district == null || announcements.get(i).getDistrict().equals(district))
+                    if(typeSelected == null || announcements.get(i).getCategory().equals(typeSelected))
+                        if(need && announcements.get(i).isNeedOrDonation())
+                            filteredannouncemnets.add(announcements.get(i));
+                        else if(donation && !announcements.get(i).isNeedOrDonation())
+                            filteredannouncemnets.add(announcements.get(i));
+        }
+       // announcements = filteredannouncemnets;
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+        }catch (Exception e){}
+    }
+    public void makeFilter(){
+        try {
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+        }catch (Exception e){}
+    }
 }

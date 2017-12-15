@@ -8,12 +8,8 @@ import dao.*;
  * Created by ofk on 10/18/17.
  */
 public class AnnouncementManager {
-    private List<Announcement> announcements;
-    public AnnouncementManager(){
-        announcements = DatabaseManager.getAnnouncements();
-    }
-    public List<Announcement> getAnnouncements(){
-        return announcements;
+    public static List<Announcement> getAnnouncements(){
+        return DatabaseManager.getAnnouncements();
     }
     public  List<Announcement> getAnnouncementsScroller(){
         return getAnnouncements();
