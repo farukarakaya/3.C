@@ -2,12 +2,14 @@ package views;
 
 import dao.DatabaseManager;
 import model.UserDetails;
+import services.EmailService;
 import session.SessionManager;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import java.util.Random;
 
 /**
  * Created by ofk on 10/19/17.
@@ -20,6 +22,8 @@ public class MenuView {
     private String password;
     private String cPassword;
     private boolean sigIn = true;
+    private String vcode;
+    private String vcodeCreated;
     public void dummy(){}
 
     public void setEmail(String email) {
@@ -50,17 +54,23 @@ public class MenuView {
         this.cPassword = cPassword;
     }
 
+    public String getVcode() {
+        return vcode;
+    }
+
+    public void setVcode(String vcode) {
+        this.vcode = vcode;
+    }
+
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
     public void singIn(){
-        System.out.println(fullName +" " + email);
-        UserDetails user = new UserDetails(fullName,email,password,false);
-        DatabaseManager.createUser(user);
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-        }catch (Exception e){}
         sigIn = false;
+        int rand = (int)(Math.random()*99999);
+        vcodeCreated = ""+ rand;
+        EmailService emailService = new EmailService();
+        emailService.sendVerificationEmail(fullName,email,vcode);
     }
     public boolean isSignedIn1(){
         return sigIn;
@@ -68,6 +78,15 @@ public class MenuView {
     public boolean isSignedIn2(){
         return !sigIn;
     }
-
+    public void validate() {
+        if (vcodeCreated.equals(vcode)) {
+            UserDetails user = new UserDetails(fullName, email, password, false);
+            DatabaseManager.createUser(user);
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            } catch (Exception e) {
+            }
+        }
+    }
 }
 

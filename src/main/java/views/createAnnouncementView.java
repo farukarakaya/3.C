@@ -49,7 +49,6 @@ public class createAnnouncementView {private MapModel geoModel;
         geoModel = new DefaultMapModel();
         cities = new Cities();
     }
-
     public void onGeocode(GeocodeEvent event) {
         geoModel = new DefaultMapModel();
         List<GeocodeResult> results = event.getResults();

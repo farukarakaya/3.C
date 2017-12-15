@@ -64,11 +64,11 @@ function setWindowContext(map,marker) {
 }
 function setWindowData(id) {
     console.log(id);
-    console.log(locations)
-    console.log(locations[id]);
-    title = locations[id].title;
-    city = locations[id].city;
-    district = locations[id].district;
+    var location = getById(id);
+    console.log(location);
+    title = location.title;
+    city = location.city;
+    district = location.district;
 }
 function clickAnnouncement(id) {
     console.log(id);
@@ -107,6 +107,14 @@ function geocode() {
     var wholeAdress = "Türkiye " +geodistrict + " " + geocity + " " + geoaddress;
     //console.log(wholeAdress);
     PF('geoMap').geocode(wholeAdress);
+}
+function getById(id) {
+    console.log(locations.length);
+    for(i = 0; i < locations.length; i++){
+        if(locations[i].id == id)
+            return locations[i];
+    }
+    return null;
 }
 
 /*PF('sumbitNewAcordion').select(1);

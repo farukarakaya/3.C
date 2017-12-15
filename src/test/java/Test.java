@@ -58,8 +58,8 @@ public class Test {
         System.out.println(databaseManager.getAnnouncementDetails(5));
         System.out.println("===================");
         System.out.println("===================");
-        UserDetails user = DatabaseManager.getUser("farukarakaya@f-gmmail.com","12345");
-        System.out.println(user);
+        UserDetails user = DatabaseManager.getUser("farukarakaya@gmail.com","12345");
+        System.out.println(user.getFullName());
         //SessionFactory sessionFactory =
 //		Session session = sessionFactory.openSession();
 //		session.beginTransaction();
