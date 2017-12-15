@@ -99,8 +99,11 @@ function sendtitle(title) {
     //console.log(title);
     SendTitle([{name:'Title', value:title}]);
 }
-function tab() {
-    PF('sumbitNewAcordion').select(2);
+function sendNeed(need) {
+    sendIsNeed([{name:'Need', value:need}]);
+}
+function sendDonation(donation) {
+    sendIsDonation([{name:'Donation', value:donation}]);
 }
 function geocode() {
     //console.log(geoaddress);

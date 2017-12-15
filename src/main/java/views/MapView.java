@@ -7,6 +7,7 @@ import dao.DatabaseManager;
 import model.Announcement;
 import model.AnnouncementManager;
 import model.Cities;
+import org.primefaces.context.RequestContext;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -99,6 +100,13 @@ public class MapView {
         this.donation = donation;
     }
 
+    public void setDonation() {
+        this.donation = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("Donation").equals("true");
+    }
+    public void setNeed() {
+        this.need = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("Need").equals("true");
+    }
+
     public void setNeed(boolean need) {
         this.need = need;
     }
@@ -119,7 +127,7 @@ public class MapView {
     }
     public void makeFilter(){
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            RequestContext.getCurrentInstance().update("center");
         }catch (Exception e){}
     }
 }

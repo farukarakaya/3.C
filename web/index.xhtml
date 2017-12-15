@@ -27,7 +27,7 @@
              <p:outputPanel id="menuPanel" style="float: right;width: 20%">
                  <h:form>
                      <p:menu value="Options" rendered="#{sessionView.admin}">
-                         <p:menuitem value="Manage Your Entries" oncomplete="PF('announcementPopup').show()" icon="ui-icon-arrowrefresh-1-w"/>
+                         <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="manageEntries" icon="ui-icon-arrowrefresh-1-w"/>
                          <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()"  icon="ui-icon-close"/>
                          <p:menuitem value="Account Settings" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
                          <p:menuitem value="Manage Users" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
@@ -35,7 +35,7 @@
                          <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
                      </p:menu>
                      <p:menu value="Options" rendered="#{sessionView.user}">
-                         <p:menuitem value="Manage Your Entries" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
+                         <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="manageEntries" icon="ui-icon-arrowrefresh-1-w"/>
                          <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()" icon="ui-icon-close"/>
                          <p:menuitem value="Account Settings" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
                          <p:separator/>
@@ -58,6 +58,8 @@
                  <p:remoteCommand name="sendCity" process="@this" update="DistrictFilter" action="#{mapView.setCity}"/>
                  <p:remoteCommand name="sendDistrict" process="@this"  action="#{mapView.setDistrict}"/>
                  <p:remoteCommand name="sendType" process="@this"  action="#{mapView.setType}"/>
+                 <p:remoteCommand name="sendIsNeed" process="@this"  action="#{mapView.setNeed}"/>
+                 <p:remoteCommand name="sendIsDonation" process="@this"  action="#{mapView.setDonation}"/>
              </h:form>
              <p:panelGrid columns="8" cellpadding="1">
                  <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{mapView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
@@ -76,9 +78,13 @@
                      <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
                  </p:selectOneMenu>
                  <h:outputText value ="Need"/>
-                 <p:selectBooleanCheckbox value="#{mapView.need}" />
+                 <p:selectBooleanCheckbox value="#{mapView.need}">
+                     <p:ajax event="change" oncomplete="sendNeed(value)"/>
+                 </p:selectBooleanCheckbox>
                  <h:outputText value ="Donation"/>
-                 <p:selectBooleanCheckbox value="#{mapView.donation}" />
+                 <p:selectBooleanCheckbox value="#{mapView.donation}" >
+                     <p:ajax event="change" oncomplete="sendDonation(value)"/>
+                 </p:selectBooleanCheckbox>
                  <p:commandButton id="filterButton" value="Filter"  actionListener="#{mapView.makeFilter}" />
              </p:panelGrid>
          </p:layoutUnit>
@@ -232,10 +238,10 @@
                      </p:panelGrid>
                  </h:form>
              </p:dialog>
-             <p:dialog header="Manage Your Entries" id="manageEntries" widgetVar="manageEntries"
-             showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
-                 <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
-                                 scrollHeight="450">
+             <p:dialog rendered="#{manageEntriesView.renderDialog}" header="Manage Your Entries" id="manageEntries" widgetVar="manageEntries"
+             showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,150" >
+                 <p:dataScroller id="manageEntriesScroll" value="#{manageEntriesView.announcements}" var="announcement" chunkSize="10" mode="inline"
+                                 scrollHeight="150">
                      <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                          <p:graphicImage value="images/embed2.jpg" width="120" height="100"/>
                          <p:outputPanel>
