@@ -4,6 +4,10 @@ import services.*;
 import model.*;
 import dao.*;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+
 public class SessionManager {
     //Attributes
     private String verificationCode;
@@ -42,18 +46,23 @@ public class SessionManager {
         try {
             user = dbManager.getUser( email, password);
         }catch (Exception e){
-            return false;
+            FacesContext.getCurrentInstance().addMessage(
+                    null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                            "Incorrect Username and Passowrd",
+                            "Please enter correct username and Password"));
+           return false;
         }
         System.out.println("Log In Succesfull");
+        HttpSession session = SessionUtils.getSession();
+        session.setAttribute("username", user.getId());
+        session.setAttribute("isAdmin", user.isAdmin());
         return true;
     }
-    public boolean logOut(){
-        if(true) {
-            user = null;
-            return true;
-        }
-        else
-            return false;
+    public void logOut(){
+                HttpSession session = SessionUtils.getSession();
+                session.invalidate();
+
     }
     public boolean isAdmin(){
         return user.isAdmin();

@@ -32,25 +32,25 @@
                          <p:menuitem value="Account Settings" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
                          <p:menuitem value="Manage Users" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
                          <p:separator/>
-                         <p:menuitem value="Sign Out" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+                         <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
                      </p:menu>
                      <p:menu value="Options" rendered="#{sessionView.user}">
                          <p:menuitem value="Manage Your Entries" actionListener="#{menuView.dummy}" update="" icon="ui-icon-arrowrefresh-1-w"/>
-                         <p:menuitem value="Submit New" actionListener="PF('submitNew').show();" ajax="false" icon="ui-icon-close"/>
+                         <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()" ajax="false" icon="ui-icon-close"/>
                          <p:menuitem value="Account Settings" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
                          <p:separator/>
-                         <p:menuitem value="Sign Out" url="http://www.primefaces.org" icon="ui-icon-extlink"/>
+                         <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
                      </p:menu>
                      <p:panelGrid columns="2" cellpadding="0" rendered="#{sessionView.guest}">
                         <h:outputLabel value="email:"/>
-                        <p:inputText value="#{menuView.email}" />
+                        <p:inputText value="#{sessionView.email}" />
                          <h:outputLabel value="password:"/>
-                         <p:password id="nonFeedback" value="#{menuView.password}" />
-                         <p:commandButton value="Log In" id="Login" actionListener="#{menuView.logIn}" update="menuPanel" styleClass="ui-priority-primary" />
+                         <p:password id="nonFeedback" value="#{sessionView.password}" />
+                         <p:commandButton value="Log In" id="Login" actionListener="#{sessionView.logIn}" update="menuPanel" styleClass="ui-priority-primary" />
                          <h:panelGrid columns="3">
                              <h:outputLabel value="or you can"/>
                              <p:spacer width="15"/>
-                             <p:commandButton value="Sıgn In" id="signin" actionListener="#{menuView.logIn}" styleClass="ui-priority-primary" /></h:panelGrid>
+                             <p:commandButton value="Sıgn In" id="signin" actionListener="#{sessionView.logIn}" styleClass="ui-priority-primary" /></h:panelGrid>
                         </p:panelGrid>
 
                  </h:form>
@@ -82,7 +82,7 @@
                  </p:selectManyCheckbox>
              </p:panelGrid>
          </p:layoutUnit>
-         <p:layoutUnit position="east" size="400">
+         <p:layoutUnit position="east" id="east" size="400">
                  <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
                                  scrollHeight="450">
                      <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
@@ -105,7 +105,7 @@
                      <p:separator />
                  </p:dataScroller>
          </p:layoutUnit>
-         <p:layoutUnit position="center" value='10' >
+         <p:layoutUnit id="center" position="center" value='10' >
              <input type="hidden" name="filter" value='10' />
              <div id="map" >
                  <script type="text/javascript">
@@ -181,7 +181,7 @@
                                          <p:ajax event="geocode" listener="#{createAnnouncementView.onGeocode}" update="@this" />
                                          <p:ajax event="markerDrag" listener="#{createAnnouncementView.onMarkerDrag}"  />
                                      </p:gmap>
-                                     <p:commandButton disabled="#{createAnnouncementView.button1Active}" id="verifyAdress" value="verify Adress" update="@this" onclick="PF('sumbitNewAcordion').select(2)"
+                                     <p:commandButton disabled="#{createAnnouncementView.button1Active}" id="verifyAdress" value="verify Adress" update="@this" onclick="PF('sumbitNewAcordion').select(1)"
                                                       style="margin-top:10px;" />
                                  </h:panelGrid>
                              </h:panelGrid>
@@ -226,9 +226,9 @@
                          <h:panelGrid columns="2" cellpadding="1">
                              <p:fileUpload value="#{createAnnouncementView.file}" mode="simple" skinSimple="true"/>
 
-                             <p:commandButton value="Submit" ajax="false" actionListener="#{createAnnouncementView.upload}" disabled="true" />
+                             <p:commandButton value="Submit" ajax="false" actionListener="#{createAnnouncementView.upload}" update="center,east" disabled="false" />
 
-                             <p:graphicImage rendered="false" name="demo/images/crop/#{cropperView.newImageName}.jpg" />
+                             <p:graphicImage rendered="false" value="images/embed2.jpg" />
                          </h:panelGrid>
                      </p:tab>
                  </p:accordionPanel>

@@ -26,14 +26,14 @@ public class DatabaseManager {
 
     @PersistenceContext
     protected EntityManager entityManager;
-    private SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-    public DatabaseManager() {
+   /* public DatabaseManager() {
         sessionFactory = new Configuration().configure().buildSessionFactory();
-    }
+    }*/
 
     // gets the user as a parameter and stores it in database
-    public boolean createUser(UserDetails user) {
+    public static boolean createUser(UserDetails user) {
         try {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
@@ -47,7 +47,7 @@ public class DatabaseManager {
     }
 
     // deletes the user from db
-    public boolean deleteUser(int userId) {
+    public static boolean deleteUser(int userId) {
         try {
             UserDetails userToDelete = new UserDetails();
             userToDelete.setId(userId);
@@ -64,7 +64,7 @@ public class DatabaseManager {
     }
 
     // returns the user by its id
-    public UserDetails getUser(int userId) {
+    public static UserDetails getUser(int userId) {
         try {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
@@ -79,7 +79,7 @@ public class DatabaseManager {
     }
 
     // returns the user according to email and password
-    public UserDetails getUser(String email, String password) {
+    public static UserDetails getUser(String email, String password) {
         try {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
@@ -96,7 +96,7 @@ public class DatabaseManager {
     }
 
     // saves the announcement in db
-    public boolean createAnnouncement(Announcement announcement) {
+    public static boolean createAnnouncement(Announcement announcement) {
         try {
             Session session = sessionFactory.openSession();
 
@@ -114,7 +114,7 @@ public class DatabaseManager {
     }
 
     // deletes an announcement by its id
-    public boolean deleteAnnouncement(int announcementId) {
+    public static boolean deleteAnnouncement(int announcementId) {
         try {
             Announcement announcementToDelete;
 
@@ -131,7 +131,7 @@ public class DatabaseManager {
     }
 
     // returns all announcements
-    public List<Announcement> getAnnouncements() {
+    public static List<Announcement> getAnnouncements() {
         try {
             Session session = sessionFactory.openSession();
             TypedQuery<Announcement> query = session.createQuery("FROM Announcement");
@@ -144,7 +144,7 @@ public class DatabaseManager {
     }
 
     // returns the list of announcements related to the userid
-    public List<Announcement> getAnnouncements(int userId) {
+    public static List<Announcement> getAnnouncements(int userId) {
         try {
             Session session = sessionFactory.openSession();
             TypedQuery<Announcement> query = session.createQuery("FROM Announcement");
@@ -163,7 +163,7 @@ public class DatabaseManager {
     }
 
     // returns the announcement from db object by its id
-    public Announcement getAnnouncementDetails(int announcementId) {
+    public static Announcement getAnnouncementDetails(int announcementId) {
         try {
             Session session = sessionFactory.openSession();
             session.beginTransaction();

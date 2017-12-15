@@ -12,6 +12,7 @@ package model;
 public class Announcement {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    private int key;
     private int id;
     private String title;
     private String contactInfo;

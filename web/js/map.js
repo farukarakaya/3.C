@@ -90,21 +90,21 @@ function sendND(needDonation) {
     sendNeedDonation([{name:'NeedDonation', value:needDonation}]);
 }
 function sendAdress(address) {
-    console.log(address);
+    //console.log(address);
     geoaddress = address;
     SendAddress([{name:'Address', value:address}]);
 }
 function sendtitle(title) {
-    console.log(title);
+    //console.log(title);
     SendTitle([{name:'Title', value:title}]);
 }
 function tab() {
     PF('sumbitNewAcordion').select(2);
 }
 function geocode() {
-    console.log(geoaddress);
+    //console.log(geoaddress);
     var wholeAdress = "Türkiye " +geodistrict + " " + geocity + " " + geoaddress;
-    console.log(wholeAdress);
+    //console.log(wholeAdress);
     PF('geoMap').geocode(wholeAdress);
 }
 

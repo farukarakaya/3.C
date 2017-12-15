@@ -1,4 +1,4 @@
-package session;
+package model;
 import model.*;
 import dao.*;
 
@@ -7,13 +7,22 @@ import java.util.List;
 
 public class UserManager {
     //Attributes
+    private static int id = 0;
     private List<UserDetails> users;
     private DatabaseManager dbManager;
 
     //Constructor
     public UserManager(){
-        users = new ArrayList<>();
-        dbManager = new DatabaseManager();
+        users = new ArrayList<UserDetails>();
+    }
+    public static void createUser( String fullName, String email, String password, boolean isAdmin){
+        id++;
+        UserDetails user = new UserDetails(id,fullName,email,password,isAdmin);
+        DatabaseManager.createUser(user);
+    }
+
+    public static int getId() {
+        return id +1;
     }
 
     //Methods

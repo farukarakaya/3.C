@@ -15,6 +15,7 @@ import javax.persistence.Table;
 public class UserDetails {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    private int key;
     private int id;
     private String fullName;
     private String email;

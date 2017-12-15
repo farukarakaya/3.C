@@ -7,8 +7,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
+import dao.DatabaseManager;
+import model.Announcement;
+import model.AnnouncementManager;
 import model.Cities;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.map.GeocodeEvent;
 import org.primefaces.event.map.MarkerDragEvent;
 import org.primefaces.event.map.ReverseGeocodeEvent;
@@ -18,6 +23,8 @@ import org.primefaces.model.map.GeocodeResult;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
+import session.SessionUtils;
+
 /**
  * Created by ofk on 10/26/17.
  */
@@ -36,6 +43,7 @@ public class createAnnouncementView {private MapModel geoModel;
     private String desciription;
     private String contactInfo;
     private UploadedFile file;
+    //AnnouncementManager announcementManager ;
     @PostConstruct
     public void init() {
         geoModel = new DefaultMapModel();
@@ -156,10 +164,14 @@ public class createAnnouncementView {private MapModel geoModel;
     }
 
     public void upload() {
-        if(file != null) {
-            FacesMessage message = new FacesMessage("Succesful", file.getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
+        //if(file != null) {
+            HttpSession session = SessionUtils.getSession();
+            int userid = (Integer) session.getAttribute("username");
+            System.out.println(userid);
+            boolean nd = needDonation.equals("Need");
+            AnnouncementManager.createAnnouncement(title,city,district,typeSelected,desciription,contactInfo,nd,coordinates.getLat(),coordinates.getLng(),userid);
+            RequestContext.getCurrentInstance().update("foo:bar");
+        //}
     }
 }
 
