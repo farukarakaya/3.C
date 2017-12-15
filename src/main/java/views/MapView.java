@@ -33,7 +33,7 @@ public class MapView {
     }
     public void setAnnouncementToShow(){
         announcementToShow = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("ID"));
-        //System.out.print(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("ID"));
+        System.out.print(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("ID"));
     }
     public int getAnnouncementToShow(){return announcementToShow;   }
     public Announcement getAnnouncememtByID(){

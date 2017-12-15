@@ -50,9 +50,8 @@
                          <h:panelGrid columns="3">
                              <h:outputLabel value="or you can"/>
                              <p:spacer width="15"/>
-                             <p:commandButton value="Sıgn In" id="signin" actionListener="#{sessionView.logIn}" styleClass="ui-priority-primary" /></h:panelGrid>
-                        </p:panelGrid>
-
+                             <p:commandButton value="Sıgn In" id="signin" onclick="PF('signInPopup').show()" styleClass="ui-priority-primary" /></h:panelGrid>
+                     </p:panelGrid>
                  </h:form>
              </p:outputPanel>
              <h:form>
@@ -127,6 +126,7 @@
              <p:dialog header="Sumnit New Announcement" id="submitNew" widgetVar="submitNew"  style="min-width: 800px; min-height: 600px;"
                        showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,50" >
                  <h:form id="submitFirstTab" prependId="false">
+                     <p:messages id="submitMessages" showDetail="true" autoUpdate="true" />
                  <p:accordionPanel id="sumbitNewAcordion" widgetVar="sumbitNewAcordion">
                      <p:tab title="General İnformation">
 
@@ -189,35 +189,9 @@
                      <p:tab title="Description and Contact Information" >
                          <h:panelGrid columns="1" cellpadding="0">
                              <h:outputText value="Enter Descirption" />
-                             <p:textEditor widgetVar="deciriptionEditor" value="#{createAnnouncementView.desciription}" height="100" style=" width:692px; margin-bottom:10px">
-                                 <f:facet name="toolbar">
-                                     <span class="ql-formats">
-                                        <button class="ql-bold"></button>
-                                        <button class="ql-italic"></button>
-                                        <button class="ql-underline"></button>
-                                        <button class="ql-strike"></button>
-                                    </span>
-                                                             <span class="ql-formats">
-                                        <select class="ql-font"></select>
-                                        <select class="ql-size"></select>
-                                    </span>
-                                 </f:facet>
-                             </p:textEditor>
+                             <p:inputTextarea widgetVar="deciriptionEditor" value="#{createAnnouncementView.desciription}" height="100" style=" width:692px; margin-bottom:10px"/>
                              <h:outputText value="Enter Contact Information" />
-                             <p:textEditor widgetVar="ContactInfoEditor" value="#{createAnnouncementView.contactInfo}" height="100" style=" margin-bottom:10px">
-                                 <f:facet name="toolbar">
-                                     <span class="ql-formats">
-                                        <button class="ql-bold"></button>
-                                        <button class="ql-italic"></button>
-                                        <button class="ql-underline"></button>
-                                        <button class="ql-strike"></button>
-                                    </span>
-                                                             <span class="ql-formats">
-                                        <select class="ql-font"></select>
-                                        <select class="ql-size"></select>
-                                    </span>
-                                 </f:facet>
-                             </p:textEditor>
+                             <p:inputTextarea widgetVar="ContactInfoEditor" value="#{createAnnouncementView.contactInfo}" height="100" style="width:692px; margin-bottom:10px"/>
                              <p:commandButton  id="submitDesConInf" value="Submit"  update="@this" onclick="PF('sumbitNewAcordion').select(2)"
                                                validateClient="true" style="margin-top:10px;" />
                          </h:panelGrid>
@@ -233,6 +207,28 @@
                      </p:tab>
                  </p:accordionPanel>
              </h:form>
+             </p:dialog>
+             <p:dialog header="Sıgn In" id="signInPopup" widgetVar="signInPopup"
+                       showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
+                 <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                 <h:form prependId="false">
+                     <p:panelGrid rendered="#{menuView.signedIn1}" id="SignInGrid" columns="2" cellpadding="1">
+                         <p:outputLabel value="Full Name"/>
+                         <p:inputText value="#{menuView.fullName}" required="true" />
+                         <p:outputLabel value="E-Mail" required="true"/>
+                         <p:inputText value="#{menuView.email}" required="true"/>
+                         <p:outputLabel value="Password"/>
+                         <p:password id="password1" value="#{menuView.password}" match="password2" required="true"/>
+                         <p:outputLabel value="Confirm Password"/>
+                         <p:password id="password2" value="#{menuView.cPassword}" required="true"/>
+                         <p:commandButton value="Sign In" update="@this" actionListener="#{menuView.singIn}" />
+                     </p:panelGrid>
+                     <p:panelGrid columns="2" rendered="#{menuView.signedIn2}">
+                         <p:outputLabel value="Please Enter Your Verification Code That Sent Your Email"/>
+                         <p:inputText value="#{menuView.vcode}" required="true" />
+                         <p:commandButton value="Sign In" update="@this" actionListener="#{menuView.verify}"/>
+                     </p:panelGrid>
+                 </h:form>
              </p:dialog>
          </p:layoutUnit>
       </p:layout>

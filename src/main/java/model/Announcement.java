@@ -12,7 +12,6 @@ package model;
 public class Announcement {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int key;
     private int id;
     private String title;
     private String contactInfo;
@@ -35,8 +34,7 @@ public class Announcement {
         this.id = id;
         this.pos = new Position(lng,lat);
     }
-    public Announcement(int id, String title, String city, String district, String category, String detail, String contactInfo,boolean needOrDonation, double lat, double lng, int userId){
-        this.id = id;
+    public Announcement(String title, String city, String district, String category, String detail, String contactInfo,boolean needOrDonation, double lat, double lng, int userId){
         this.title = title;
         this.city = city;
         this.district = district;

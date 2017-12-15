@@ -47,7 +47,7 @@ public class SessionView {
     }
     public boolean logIn(){
         //UserDetails user = DatabaseManager.getUser(email,password);
-        UserDetails user = new UserDetails(3,"Omer","farukarakaya@gmail.com","12345",true);
+        UserDetails user = new UserDetails("Omer","farukarakaya@gmail.com","12345",true);
         System.out.println(email+" "+ password);
         if(user != null) {
             System.out.println("Log In Succesfull");

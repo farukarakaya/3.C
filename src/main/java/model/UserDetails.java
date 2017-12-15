@@ -15,7 +15,6 @@ import javax.persistence.Table;
 public class UserDetails {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int key;
     private int id;
     private String fullName;
     private String email;
@@ -24,8 +23,7 @@ public class UserDetails {
 
     public UserDetails() {}
 
-    public UserDetails(int id, String fullName, String email, String password, boolean isAdmin) {
-        this.id = id;
+    public UserDetails(String fullName, String email, String password, boolean isAdmin) {
         this.fullName = fullName;
         this.email = email;
         this.password = password;

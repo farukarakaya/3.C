@@ -71,6 +71,7 @@ function setWindowData(id) {
     district = locations[id].district;
 }
 function clickAnnouncement(id) {
+    console.log(id);
     sendID([{name:'ID', value:id}]);
 }
 function sendSelectedCity(scity) {

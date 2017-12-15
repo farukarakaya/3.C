@@ -170,8 +170,24 @@ public class createAnnouncementView {private MapModel geoModel;
             System.out.println(userid);
             boolean nd = needDonation.equals("Need");
             AnnouncementManager.createAnnouncement(title,city,district,typeSelected,desciription,contactInfo,nd,coordinates.getLat(),coordinates.getLng(),userid);
-            RequestContext.getCurrentInstance().update("foo:bar");
-        //}
+            RequestContext.getCurrentInstance().update("center");
+            clean();;
+            try{
+            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            }catch (Exception e){}
+    }
+    private void clean(){
+        centerGeoMap = "39.9334, 32.8597";
+        title="";
+        city ="";
+        typeSelected= "";
+        district= "";
+        address = "";
+        needDonation =null;
+        coordinates= new LatLng(39.9334, 32.8597);
+        desciription= "";
+        contactInfo = "";
+        file =null;
     }
 }
 

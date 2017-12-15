@@ -7,7 +7,6 @@ import java.util.List;
 
 public class UserManager {
     //Attributes
-    private static int id = 0;
     private List<UserDetails> users;
     private DatabaseManager dbManager;
 
@@ -16,13 +15,8 @@ public class UserManager {
         users = new ArrayList<UserDetails>();
     }
     public static void createUser( String fullName, String email, String password, boolean isAdmin){
-        id++;
-        UserDetails user = new UserDetails(id,fullName,email,password,isAdmin);
+        UserDetails user = new UserDetails(fullName,email,password,isAdmin);
         DatabaseManager.createUser(user);
-    }
-
-    public static int getId() {
-        return id +1;
     }
 
     //Methods
@@ -46,8 +40,7 @@ public class UserManager {
     }
     //public List getUsers(){return dbManager.getUser()}
     public static void main(String []args) {
-        DatabaseManager databaseManager = new DatabaseManager();
-        UserDetails user = new UserDetails(1,"Omer","farukarakaya@gmail.com","12345",true);
-        databaseManager.createUser(user);
+        UserDetails user = new UserDetails("Omer","farukarakaya@gmail.com","12345",true);
+        DatabaseManager.createUser(user);
     }
 }
