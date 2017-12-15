@@ -46,6 +46,24 @@ public class DatabaseManager {
         }
     }
 
+    // finds the user and changes his/her password
+    public static boolean setUserPassword(int userId, String newPassword) {
+        try {
+            UserDetails user = getUser(userId);
+
+            user.setPassword(newPassword);
+
+            Session session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(user);
+            session.getTransaction().commit();
+            session.close();
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     // private function for checking if the user with this email exists
     // traverses the database and compares the emails
     public static boolean userExists(String email) {
