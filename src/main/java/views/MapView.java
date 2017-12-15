@@ -3,6 +3,7 @@ package views;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import dao.DatabaseManager;
 import model.Announcement;
 import model.AnnouncementManager;
 import model.Cities;
@@ -31,14 +32,15 @@ public class MapView {
     private boolean need =true;
     private boolean donation = true;
     private Cities cities;
-    List<Announcement> announcements = AnnouncementManager.getAnnouncements();
+    private boolean filter = false;
+    List<Announcement> announcements ;
     @PostConstruct
     public void init() {
-        dataSource = new AnnouncementManager();
         cities = new Cities();
     }
 
     public JsonElement getAnnouncementsMap(){
+        filter();
         return gson.toJsonTree(announcements);
     }
     public void setAnnouncementToShow(){
@@ -47,7 +49,7 @@ public class MapView {
     }
     public int getAnnouncementToShow(){return announcementToShow; }
     public Announcement getAnnouncememtByID(){
-        return dataSource.getAnnouncementByID(announcementToShow);
+        return AnnouncementManager.getAnnouncementByID(announcementToShow);
     }
 
     public String getCity(){return city;}
@@ -102,7 +104,7 @@ public class MapView {
     }
 
     public void filter(){
-        announcements = dataSource.getAnnouncements();
+        announcements = DatabaseManager.getAnnouncements();
         List<Announcement> filteredannouncemnets = new ArrayList<Announcement>();
         for (int i= 0; i < announcements.size(); i++){
             if(city == null || announcements.get(i).getCity().equals(city))
@@ -114,13 +116,10 @@ public class MapView {
                             filteredannouncemnets.add(announcements.get(i));
         }
        // announcements = filteredannouncemnets;
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-        }catch (Exception e){}
     }
     public void makeFilter(){
         try {
-            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
         }catch (Exception e){}
     }
 }

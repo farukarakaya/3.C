@@ -17,7 +17,7 @@ public class AnnouncementManager {
     public List<Announcement> getAnnouncementsMap(){
         return getAnnouncements();
     }
-    public Announcement getAnnouncementByID(int id) {return DatabaseManager.getAnnouncementDetails(id);}
+    public static Announcement getAnnouncementByID(int id) {return DatabaseManager.getAnnouncementDetails(id);}
     public static void createAnnouncement(String title, String city, String district, String category, String detail, String contactInfo,boolean needOrDonation, double lat, double lng, int userId){
         DatabaseManager.createAnnouncement( new Announcement(title,city,district,category,detail,contactInfo,needOrDonation,lat,lng,userId));
     }

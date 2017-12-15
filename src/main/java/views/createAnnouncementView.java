@@ -169,8 +169,8 @@ public class createAnnouncementView {private MapModel geoModel;
             System.out.println(userid);
             boolean nd = needDonation.equals("Need");
             AnnouncementManager.createAnnouncement(title,city,district,typeSelected,desciription,contactInfo,nd,coordinates.getLat(),coordinates.getLng(),userid);
-            RequestContext.getCurrentInstance().update("center");
-            clean();;
+            //RequestContext.getCurrentInstance().update("center");
+            //clean();
             try{
             FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
             }catch (Exception e){}

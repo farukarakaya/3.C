@@ -79,7 +79,7 @@
                  <p:selectBooleanCheckbox value="#{mapView.need}" />
                  <h:outputText value ="Donation"/>
                  <p:selectBooleanCheckbox value="#{mapView.donation}" />
-                 <p:commandButton id="filterButton" value="Filter"  actionListener="#{mapView.filter}" />
+                 <p:commandButton id="filterButton" value="Filter"  actionListener="#{mapView.makeFilter}" />
              </p:panelGrid>
          </p:layoutUnit>
          <p:layoutUnit position="east" id="east" size="400">
@@ -231,6 +231,30 @@
                          <p:commandButton value="Sign In" update="@this" actionListener="#{menuView.validate}"/>
                      </p:panelGrid>
                  </h:form>
+             </p:dialog>
+             <p:dialog header="Manage Your Entries" id="manageEntries" widgetVar="manageEntries"
+             showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
+                 <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
+                                 scrollHeight="450">
+                     <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                         <p:graphicImage value="images/embed2.jpg" width="120" height="100"/>
+                         <p:outputPanel>
+                             <h:form>
+                                 <p:remoteCommand name="sendID" process="@this" oncomplete="PF('announcementPopup').show()"
+                                                  update="announcementPopup" action="#{mapView.setAnnouncementToShow}" />
+                             </h:form>
+                             <h:panelGrid columns="1" cellpadding="2">
+                                 <h:outputText value="#{announcement.title}" style="font-weight: bold"/>
+
+                                 <h:outputText value="#{announcement.id}" style="font-weight: bold"/>
+
+                                 <p:commandButton value="Show" id="ManEntButton"  onclick="clickAnnouncement(#{announcement.id})"/>
+
+                             </h:panelGrid>
+                         </p:outputPanel>
+                     </h:panelGrid>
+                     <p:separator />
+                 </p:dataScroller>
              </p:dialog>
          </p:layoutUnit>
       </p:layout>
