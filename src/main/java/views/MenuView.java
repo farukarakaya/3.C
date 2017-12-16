@@ -4,11 +4,13 @@ import dao.DatabaseManager;
 import model.UserDetails;
 import services.EmailService;
 import session.SessionManager;
+import session.SessionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import java.util.Random;
 
 /**
@@ -21,6 +23,8 @@ public class MenuView {
     private String email;
     private String password;
     private String cPassword;
+    private String cPassword1;
+    private String cPassword2;
     private boolean sigIn = true;
     private String vcode;
     private String vcodeCreated;
@@ -56,6 +60,22 @@ public class MenuView {
 
     public String getVcode() {
         return vcode;
+    }
+
+    public String getcPassword1() {
+        return cPassword1;
+    }
+
+    public String getcPassword2() {
+        return cPassword2;
+    }
+
+    public void setcPassword1(String cPassword1) {
+        this.cPassword1 = cPassword1;
+    }
+
+    public void setcPassword2(String cPassword2) {
+        this.cPassword2 = cPassword2;
     }
 
     public void setVcode(String vcode) {
@@ -101,9 +121,17 @@ public class MenuView {
         email ="";
         password ="";
         cPassword ="";
+        cPassword1="";
+        cPassword2="";
         sigIn = true;
         vcode = null;
         vcodeCreated = null;
+    }
+    public void changePassword(){
+        HttpSession session = SessionUtils.getSession();
+        int userid = (Integer) session.getAttribute("username");
+        DatabaseManager.setUserPassword(userid,cPassword1);
+        clean();
     }
 }
 

@@ -29,7 +29,7 @@
                      <p:menu value="Options" rendered="#{sessionView.admin}">
                          <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="manageEntriesScroll" icon="ui-icon-arrowrefresh-1-w"/>
                          <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()"  icon="ui-icon-close"/>
-                         <p:menuitem value="Account Settings" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
+                         <p:menuitem value="Account Settings" oncomplete="PF('chamgePassPopup').show()"  icon="ui-icon-close"/>
                          <p:menuitem value="Manage Users" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
                          <p:separator/>
                          <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
@@ -37,7 +37,7 @@
                      <p:menu value="Options" rendered="#{sessionView.user}">
                          <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="manageEntries" icon="ui-icon-arrowrefresh-1-w"/>
                          <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()" icon="ui-icon-close"/>
-                         <p:menuitem value="Account Settings" actionListener="#{menuView.dummy}" ajax="false" icon="ui-icon-close"/>
+                         <p:menuitem value="Account Settings" oncomplete="PF('chamgePassPopup').show()"  icon="ui-icon-close"/>
                          <p:separator/>
                          <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
                      </p:menu>
@@ -60,33 +60,33 @@
                  <p:remoteCommand name="sendType" process="@this"  action="#{mapView.setType}"/>
                  <p:remoteCommand name="sendIsNeed" process="@this"  action="#{mapView.setNeed}"/>
                  <p:remoteCommand name="sendIsDonation" process="@this"  action="#{mapView.setDonation}"/>
+                 <p:panelGrid columns="8" cellpadding="1">
+                     <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{mapView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
+                         <f:selectItem itemLabel="Select City"  itemValue="" />
+                         <f:selectItems value="#{mapView.cities}" var="city" itemValue="#{city}" />
+                         <p:ajax event="change" oncomplete="sendSelectedCity(value)"/>
+                     </p:selectOneMenu>
+                     <p:selectOneMenu disabled="#{mapView.citySelected}" id="DistrictFilter" value="#{mapView.district}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                        <f:selectItem  itemLabel="Select District" itemValue="" />
+                        <f:selectItems value="#{mapView.districts}" />
+                        <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
+                     </p:selectOneMenu>
+                     <p:selectOneMenu  id="TypeFilter" value="#{mapView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                         <f:selectItem  itemLabel="Select Type" itemValue="" />
+                         <f:selectItems value="#{mapView.types}" />
+                         <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
+                     </p:selectOneMenu>
+                     <h:outputText value ="Need"/>
+                     <p:selectBooleanCheckbox value="#{mapView.need}">
+                         <p:ajax event="change" oncomplete="sendNeed(value)"/>
+                     </p:selectBooleanCheckbox>
+                     <h:outputText value ="Donation"/>
+                     <p:selectBooleanCheckbox value="#{mapView.donation}" >
+                         <p:ajax event="change" oncomplete="sendDonation(value)"/>
+                     </p:selectBooleanCheckbox>
+                     <p:commandButton id="filterButton" value="Filter"  actionListener="#{mapView.makeFilter}" />
+                 </p:panelGrid>
              </h:form>
-             <p:panelGrid columns="8" cellpadding="1">
-                 <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{mapView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
-                     <f:selectItem itemLabel="Select City"  itemValue="" />
-                     <f:selectItems value="#{mapView.cities}" var="city" itemValue="#{city}" />
-                     <p:ajax event="change" oncomplete="sendSelectedCity(value)"/>
-                 </p:selectOneMenu>
-                 <p:selectOneMenu disabled="#{mapView.citySelected}" id="DistrictFilter" value="#{mapView.district}" filter="true" filterMatchMode="startsWith" style="width:125px">
-                    <f:selectItem  itemLabel="Select District" itemValue="" />
-                    <f:selectItems value="#{mapView.districts}" />
-                    <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
-                 </p:selectOneMenu>
-                 <p:selectOneMenu  id="TypeFilter" value="#{mapView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
-                     <f:selectItem  itemLabel="Select Type" itemValue="" />
-                     <f:selectItems value="#{mapView.types}" />
-                     <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
-                 </p:selectOneMenu>
-                 <h:outputText value ="Need"/>
-                 <p:selectBooleanCheckbox value="#{mapView.need}">
-                     <p:ajax event="change" oncomplete="sendNeed(value)"/>
-                 </p:selectBooleanCheckbox>
-                 <h:outputText value ="Donation"/>
-                 <p:selectBooleanCheckbox value="#{mapView.donation}" >
-                     <p:ajax event="change" oncomplete="sendDonation(value)"/>
-                 </p:selectBooleanCheckbox>
-                 <p:commandButton id="filterButton" value="Filter"  actionListener="#{mapView.makeFilter}" />
-             </p:panelGrid>
          </p:layoutUnit>
          <p:layoutUnit position="east" id="east" size="400">
                  <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
@@ -261,6 +261,21 @@
                      </h:panelGrid>
                      <p:separator />
                  </p:dataScroller>
+             </p:dialog>
+             <p:dialog header="Change Password" id="chamgePassPopup" widgetVar="chamgePassPopup"
+                       showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
+                 <p:messages id="CPmessages" showDetail="true" autoUpdate="true" />
+                 <h:form id="ChangePasswordForm" prependId="false">
+                     <p:panelGrid  id="ChangePasswordGrid" columns="2" cellpadding="1">
+                         <p:outputLabel value="Password"/>
+                         <p:password id="cpassword" value="#{menuView.cPassword}"  required="true"/>
+                         <p:outputLabel value="Password"/>
+                         <p:password id="cpassword1" value="#{menuView.cPassword1}" match="cpassword2" required="true"/>
+                         <p:outputLabel value="Confirm Password"/>
+                         <p:password id="cpassword2" value="#{menuView.cPassword2}" required="true"/>
+                         <p:commandButton value="Sign In"  />
+                     </p:panelGrid>
+                 </h:form>
              </p:dialog>
          </p:layoutUnit>
       </p:layout>
