@@ -240,27 +240,21 @@
              </p:dialog>
              <p:dialog  header="Manage Your Entries" id="manageEntries" widgetVar="manageEntries"
              showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,150" >
-                 <p:dataScroller rendered="#{manageEntriesView.renderDialog}" id="manageEntriesScroll" value="#{manageEntriesView.announcements}" var="announcement" chunkSize="10" mode="inline"
-                                 scrollHeight="150">
-                     <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                         <p:graphicImage value="images/embed2.jpg" width="120" height="100"/>
-                         <p:outputPanel>
-                             <h:form>
-                                 <p:remoteCommand name="sendID" process="@this" oncomplete="PF('announcementPopup').show()"
-                                                  update="announcementPopup" action="#{mapView.setAnnouncementToShow}" />
-                             </h:form>
-                             <h:panelGrid columns="1" cellpadding="2">
-                                 <h:outputText value="#{announcement.title}" style="font-weight: bold"/>
-
-                                 <h:outputText value="#{announcement.id}" style="font-weight: bold"/>
-
-                                 <p:commandButton value="Show" id="ManEntButton"  onclick="clickAnnouncement(#{announcement.id})"/>
-
-                             </h:panelGrid>
-                         </p:outputPanel>
-                     </h:panelGrid>
-                     <p:separator />
-                 </p:dataScroller>
+                 <p:dataTable var="announcement" value="#{manageEntriesView.announcements}" scrollable="true" scrollHeight="250" style="width: 600px;">
+                 <p:column headerText="Id"  >
+                     <h:outputText value="#{announcement.title}" />
+                 </p:column>
+                 <p:column headerText="City" >
+                     <h:outputText value="#{announcement.city}" />
+                 </p:column>
+                 <p:column headerText="District" >
+                     <h:outputText value="#{announcement.district}" />
+                 </p:column>
+                 <p:column headerText="Show" >
+                     <p:commandButton onclick="PF('chamgePassPopup').hide()" oncomplete="clickAnnouncement(#{announcement.id})" icon="ui-icon-search" title="View">
+                     </p:commandButton>
+                 </p:column>
+             </p:dataTable>
              </p:dialog>
              <p:dialog header="Change Password" id="chamgePassPopup" widgetVar="chamgePassPopup"
                        showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
@@ -273,7 +267,7 @@
                          <p:password id="cpassword1" value="#{menuView.cPassword1}" match="cpassword2" required="true"/>
                          <p:outputLabel value="Confirm Password"/>
                          <p:password id="cpassword2" value="#{menuView.cPassword2}" required="true"/>
-                         <p:commandButton value="Sign In"  />
+                         <p:commandButton value="Sign In"  actionListener="#{menuView.changePassword}"/>
                      </p:panelGrid>
                  </h:form>
              </p:dialog>

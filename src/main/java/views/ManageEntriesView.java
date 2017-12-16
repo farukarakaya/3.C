@@ -25,10 +25,12 @@ public class ManageEntriesView {
         session = SessionUtils.getSession();
         if(session.getAttribute("username") != null) {
             userId = (Integer) session.getAttribute("username");
+            System.out.println(userId);
             for (int i = 0; i < announcements.size(); i++) {
                 if (announcements.get(i).getUserId() == userId)
                     usersAnnouncements.add(announcements.get(i));
             }
+            System.out.println(usersAnnouncements.size());
             return usersAnnouncements;
         }
         return null;

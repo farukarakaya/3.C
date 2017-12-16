@@ -2,11 +2,13 @@ package views;
 
 import dao.DatabaseManager;
 import model.UserDetails;
+import org.primefaces.context.RequestContext;
 import services.EmailService;
 import session.SessionManager;
 import session.SessionUtils;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -130,7 +132,14 @@ public class MenuView {
     public void changePassword(){
         HttpSession session = SessionUtils.getSession();
         int userid = (Integer) session.getAttribute("username");
-        DatabaseManager.setUserPassword(userid,cPassword1);
+        if(DatabaseManager.getUser(userid).getPassword().equals(cPassword)) {
+            DatabaseManager.setUserPassword(userid, cPassword1);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('chamgePassPopup').hide();");
+        }
+        else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Wrong Password."));
+        }
         clean();
     }
 }
