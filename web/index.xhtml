@@ -92,7 +92,7 @@
                  <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
                                  scrollHeight="450">
                      <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                         <p:graphicImage value="images/embed2.jpg" width="120" height="100"/>
+                         <p:graphicImage value="images/illustrations/#{announcement.category}.png" width="120" height="100"/>
                          <p:outputPanel>
                              <h:form>
                                  <p:remoteCommand name="sendID" process="@this" oncomplete="PF('announcementPopup').show()"
@@ -118,14 +118,17 @@
                      getAnnouncements(#{mapView.announcementsMap});
                      initMap();
                  </script>
-                 <p:dialog header="#{mapView.getAnnouncememtByID().title}" id="announcementPopup" widgetVar="announcementPopup"
-                           showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="150,250" >
-                     <p:graphicImage value="images/embed2.jpg" width="240" height="200" style="float: left"/>
-                     <h:panelGrid columns="1" style="margin-bottom:10px; float: left" cellpadding="5">
-                         <h:outputText value="#{mapView.getAnnouncememtByID().detail}" style="font-weight: mormal"/>
-                         <h:outputText rendered="#{sessionView.user}" value="#{mapView.getAnnouncememtByID().contactInfo}" style="font-weight: mormal"/>
-                     </h:panelGrid>
-                 </p:dialog>
+                 <h:form prependId="false">
+                     <p:dialog header="#{mapView.getAnnouncememtByID().title}" id="announcementPopup" widgetVar="announcementPopup"
+                               showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="150,250" >
+                         <p:ajax event="open" update="announcementPopupImage"/>
+                         <p:graphicImage id="announcementPopupImage" value="images/illustrations/#{mapView.getAnnouncememtByID().category}.png" width="240" height="200" style="float: left"/>
+                         <h:panelGrid columns="1" style="margin-bottom:10px; float: left" cellpadding="5">
+                             <h:outputText value="#{mapView.getAnnouncememtByID().detail}" style="font-weight: mormal"/>
+                             <h:outputText rendered="#{sessionView.user}" value="#{mapView.getAnnouncememtByID().contactInfo}" style="font-weight: mormal"/>
+                         </h:panelGrid>
+                     </p:dialog>
+                 </h:form>
              </div>
          </p:layoutUnit>
          <p:layoutUnit position="south" size="50">
