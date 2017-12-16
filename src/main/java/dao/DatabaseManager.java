@@ -2,14 +2,10 @@ package dao;
 
         import java.util.Iterator;
         import java.util.List;
-        import java.util.Map;
 
         import javax.persistence.EntityManager;
         import javax.persistence.PersistenceContext;
         import javax.persistence.TypedQuery;
-        import javax.persistence.criteria.CriteriaBuilder;
-        import javax.persistence.criteria.CriteriaQuery;
-        import javax.persistence.criteria.Root;
 
         import model.*;
 
@@ -17,10 +13,7 @@ package dao;
         import org.hibernate.Session;
         import org.hibernate.SessionFactory;
         import org.hibernate.cfg.Configuration;
-        import org.hibernate.criterion.ProjectionList;
-        import org.hibernate.criterion.Projections;
         import org.hibernate.criterion.Restrictions;
-        import org.hibernate.query.Query;
 
 public class DatabaseManager {
 
@@ -33,7 +26,7 @@ public class DatabaseManager {
     }*/
 
     // gets the user as a parameter and stores it in database
-    public static boolean createUser(UserDetails user) {
+    public static boolean createUser(User user) {
         try {
                 Session session = sessionFactory.openSession();
                 session.beginTransaction();
@@ -49,7 +42,7 @@ public class DatabaseManager {
     // finds the user and changes his/her password
     public static boolean setUserPassword(int userId, String newPassword) {
         try {
-            UserDetails user = getUser(userId);
+            User user = getUser(userId);
 
             user.setPassword(newPassword);
 
@@ -71,8 +64,8 @@ public class DatabaseManager {
                 Session session = sessionFactory.openSession();
                 session.beginTransaction();
 
-                Criteria criteria = session.createCriteria(UserDetails.class);
-                UserDetails user = (UserDetails) criteria.add(Restrictions.eq("email", email)).uniqueResult();
+                Criteria criteria = session.createCriteria(User.class);
+                User user = (User) criteria.add(Restrictions.eq("email", email)).uniqueResult();
                 session.getTransaction().commit();
                 session.close();
 
@@ -83,11 +76,17 @@ public class DatabaseManager {
             }
     }
     // deletes the user from db
+    // 1. delete all announcements of the user
+    // 2. delete the user
     public static boolean deleteUser(int userId) {
         try {
-            UserDetails userToDelete = new UserDetails();
+            User userToDelete = new User();
             userToDelete.setId(userId);
 
+            // 1. delete all announcements of the user
+            deleteAnnouncements(getAnnouncements(userId));
+
+            // 2. delete the user
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.delete(userToDelete);
@@ -100,11 +99,11 @@ public class DatabaseManager {
     }
 
     // returns the user by its id
-    public static UserDetails getUser(int userId) {
+    public static User getUser(int userId) {
         try {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
-            UserDetails user = session.get(UserDetails.class, userId);
+            User user = session.get(User.class, userId);
             session.getTransaction().commit();
             session.close();
 
@@ -115,17 +114,30 @@ public class DatabaseManager {
     }
 
     // returns the user according to email and password
-    public static UserDetails getUser(String email, String password) {
+    public static User getUser(String email, String password) {
         try {
             Session session = sessionFactory.openSession();
             session.beginTransaction();
 
-            Criteria criteria = session.createCriteria(UserDetails.class);
-            UserDetails user = (UserDetails) criteria.add(Restrictions.eq("email", email)).add(Restrictions.eq("password", password)).uniqueResult();
+            Criteria criteria = session.createCriteria(User.class);
+            User user = (User) criteria.add(Restrictions.eq("email", email)).add(Restrictions.eq("password", password)).uniqueResult();
             session.getTransaction().commit();
             session.close();
 
             return user;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    // returns all users
+    public static List<User> getUsers() {
+        try {
+            Session session = sessionFactory.openSession();
+            TypedQuery<User> query = session.createQuery("FROM User");
+            List<User> result = query.getResultList();
+            session.close();
+            return result;
         } catch (Exception e) {
             return null;
         }
@@ -145,6 +157,24 @@ public class DatabaseManager {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    // deletes an announcement by its id
+    public static boolean deleteAnnouncements(List<Announcement> announcementsToDelete) {
+        try {
+
+            Session session = sessionFactory.openSession();
+            for (Announcement announcementToDelete : announcementsToDelete) {
+                session.beginTransaction();
+                session.delete(announcementToDelete);
+                session.getTransaction().commit();
+            }
+            session.close();
+
+            return true;
+        } catch (Exception e) {
             return false;
         }
     }

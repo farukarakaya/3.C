@@ -1,7 +1,7 @@
 package views;
 
 import dao.DatabaseManager;
-import model.UserDetails;
+import model.User;
 import session.SessionUtils;
 
 import javax.annotation.PostConstruct;
@@ -42,8 +42,8 @@ public class SessionView {
         return (session == null);
     }
     public boolean logIn(){
-        UserDetails user = DatabaseManager.getUser(email,password);
-        //UserDetails user = new UserDetails("Omer","farukarakaya@gmail.com","12345",true);
+        User user = DatabaseManager.getUser(email,password);
+        //User user = new User("Omer","farukarakaya@gmail.com","12345",true);
         //System.out.println(email+" "+ password);
         if(user != null) {
             System.out.println("Log In Succesfull");
@@ -82,7 +82,7 @@ public class SessionView {
         this.email = email;
     }
     public static void main(String []args){
-        UserDetails u = DatabaseManager.getUser("farukarakaya@gmail.com","12345");
+        User u = DatabaseManager.getUser("farukarakaya@gmail.com","12345");
         System.out.println(u);
     }
 }

@@ -39,4 +39,8 @@ public class ManageEntriesView {
         session = SessionUtils.getSession();
         return session.getAttribute("username") != null;
     }
+
+    public void deleteAnnouncemnet(int id){
+        DatabaseManager.deleteAnnouncement(id);
+    }
 }

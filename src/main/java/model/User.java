@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "USERS_TABLE")
-public class UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
@@ -21,9 +21,9 @@ public class UserDetails {
     private String password;
     private boolean isAdmin;
 
-    public UserDetails() {}
+    public User() {}
 
-    public UserDetails(String fullName, String email, String password, boolean isAdmin) {
+    public User(String fullName, String email, String password, boolean isAdmin) {
         this.fullName = fullName;
         this.email = email;
         this.password = password;

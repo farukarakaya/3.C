@@ -30,7 +30,7 @@
                          <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="" icon="ui-icon-arrowrefresh-1-w"/>
                          <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()"  icon="ui-icon-close"/>
                          <p:menuitem value="Account Settings" oncomplete="PF('chamgePassPopup').show()"  icon="ui-icon-close"/>
-                         <p:menuitem value="Manage Users" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
+                         <p:menuitem value="Manage Users" oncomplete="PF('usersPopup').show()"  icon="ui-icon-close"/>
                          <p:separator/>
                          <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
                      </p:menu>
@@ -259,10 +259,27 @@
                          </p:commandButton>
                      </p:column>
                      <p:column headerText="Delete" >
-                         <p:commandButton  actionListener="#{menuView.deleteAnnouncemnet(announcement.id)}" update="manageEntriesTable" icon="ui-icon-search" title="View">
+                         <p:commandButton  actionListener="#{manageEntriesView.deleteAnnouncemnet(announcement.id)}" update="manageEntriesTable" icon="ui-icon-search" title="View">
                          </p:commandButton>
                      </p:column>
                  </p:dataTable>
+                 </h:form>
+             </p:dialog>
+             <p:dialog  header="Manage Users" id="usersPopup" widgetVar="usersPopup"
+                        showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,150" >
+                 <h:form>
+                     <p:dataTable id="manageUsersTable" var="user" value="#{manageUsersView.users}" scrollable="true" scrollHeight="250" style="width: 600px;">
+                         <p:column headerText="Full Name"  >
+                             <h:outputText value="#{user.fullName}" />
+                         </p:column>
+                         <p:column headerText="Email"  >
+                             <h:outputText value="#{user.email}" />
+                         </p:column>
+                         <p:column headerText="Delete" >
+                             <p:commandButton  actionListener="#{manageUsersView.deleteUser(user.id)}" update="manageUsersTable" icon="ui-icon-search" title="View">
+                             </p:commandButton>
+                         </p:column>
+                     </p:dataTable>
                  </h:form>
              </p:dialog>
              <p:dialog header="Change Password" id="chamgePassPopup" widgetVar="chamgePassPopup"

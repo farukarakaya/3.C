@@ -1,7 +1,7 @@
 package views;
 
 import dao.DatabaseManager;
-import model.UserDetails;
+import model.User;
 import org.primefaces.context.RequestContext;
 import services.EmailService;
 import session.SessionUtils;
@@ -106,7 +106,7 @@ public class MenuView {
     }
     public void validate() {
         if (vcodeCreated.equals(vcode)) {
-            UserDetails user = new UserDetails(fullName, email, password, false);
+            User user = new User(fullName, email, password, false);
             DatabaseManager.createUser(user);
             clean();
             try {
@@ -138,9 +138,6 @@ public class MenuView {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Wrong Password."));
         }
         clean();
-    }
-    public void deleteAnnouncemnet(int id){
-        DatabaseManager.deleteAnnouncement(id);
     }
 }
 

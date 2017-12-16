@@ -1,5 +1,4 @@
 package model;
-import model.*;
 import dao.*;
 
 import java.util.ArrayList;
@@ -7,15 +6,15 @@ import java.util.List;
 
 public class UserManager {
     //Attributes
-    private List<UserDetails> users;
+    private List<User> users;
     private DatabaseManager dbManager;
 
     //Constructor
     public UserManager(){
-        users = new ArrayList<UserDetails>();
+        users = new ArrayList<User>();
     }
     public static void createUser( String fullName, String email, String password, boolean isAdmin){
-        UserDetails user = new UserDetails(fullName,email,password,isAdmin);
+        User user = new User(fullName,email,password,isAdmin);
         DatabaseManager.createUser(user);
     }
 
@@ -32,7 +31,7 @@ public class UserManager {
         else
             return false;
     }*/
-    public boolean editUserInfo(UserDetails user){ //user => will it be dynamic?
+    public boolean editUserInfo(User user){ //user => will it be dynamic?
         if(dbManager.createUser(user))
             return true;
         else
@@ -40,7 +39,7 @@ public class UserManager {
     }
     //public List getUsers(){return dbManager.getUser()}
     public static void main(String []args) {
-        UserDetails user = new UserDetails("Omer","farukarakaya@gmail.com","12345",true);
+        User user = new User("Omer","farukarakaya@gmail.com","12345",true);
         DatabaseManager.createUser(user);
     }
 }
