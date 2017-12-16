@@ -2,7 +2,6 @@ package views;
 
 import dao.DatabaseManager;
 import model.UserDetails;
-import session.SessionManager;
 import session.SessionUtils;
 
 import javax.annotation.PostConstruct;
