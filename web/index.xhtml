@@ -23,11 +23,11 @@
      <h:body >
       <p:layout fullPage="true">
          <p:layoutUnit position="north"  size="200"  >
-             <p:graphicImage value="images/vmap_banner.png" style="float: left; width: 80%; height: 145px;" />
+             <p:graphicImage value="images/single_banner.png" style="float: left; width: 80%; height: 145px;" />
              <p:outputPanel id="menuPanel" style="float: right;width: 20%">
                  <h:form>
                      <p:menu value="Options" rendered="#{sessionView.admin}">
-                         <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="manageEntriesScroll" icon="ui-icon-arrowrefresh-1-w"/>
+                         <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="" icon="ui-icon-arrowrefresh-1-w"/>
                          <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()"  icon="ui-icon-close"/>
                          <p:menuitem value="Account Settings" oncomplete="PF('chamgePassPopup').show()"  icon="ui-icon-close"/>
                          <p:menuitem value="Manage Users" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
@@ -240,21 +240,27 @@
              </p:dialog>
              <p:dialog  header="Manage Your Entries" id="manageEntries" widgetVar="manageEntries"
              showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,150" >
-                 <p:dataTable var="announcement" value="#{manageEntriesView.announcements}" scrollable="true" scrollHeight="250" style="width: 600px;">
-                 <p:column headerText="Id"  >
-                     <h:outputText value="#{announcement.title}" />
-                 </p:column>
-                 <p:column headerText="City" >
-                     <h:outputText value="#{announcement.city}" />
-                 </p:column>
-                 <p:column headerText="District" >
-                     <h:outputText value="#{announcement.district}" />
-                 </p:column>
-                 <p:column headerText="Show" >
-                     <p:commandButton onclick="PF('chamgePassPopup').hide()" oncomplete="clickAnnouncement(#{announcement.id})" icon="ui-icon-search" title="View">
-                     </p:commandButton>
-                 </p:column>
-             </p:dataTable>
+                 <h:form>
+                 <p:dataTable id="manageEntriesTable" var="announcement" value="#{manageEntriesView.announcements}" scrollable="true" scrollHeight="250" style="width: 600px;">
+                     <p:column headerText="Id"  >
+                         <h:outputText value="#{announcement.title}" />
+                     </p:column>
+                     <p:column headerText="City" >
+                         <h:outputText value="#{announcement.city}" />
+                     </p:column>
+                     <p:column headerText="District" >
+                         <h:outputText value="#{announcement.district}" />
+                     </p:column>
+                     <p:column headerText="Show" >
+                         <p:commandButton onclick="PF('chamgePassPopup').hide()" oncomplete="clickAnnouncement(#{announcement.id})" icon="ui-icon-search" title="View">
+                         </p:commandButton>
+                     </p:column>
+                     <p:column headerText="Delete" >
+                         <p:commandButton  actionListener="#{menuView.deleteAnnouncemnet(announcement.id)}" update="manageEntriesTable" icon="ui-icon-search" title="View">
+                         </p:commandButton>
+                     </p:column>
+                 </p:dataTable>
+                 </h:form>
              </p:dialog>
              <p:dialog header="Change Password" id="chamgePassPopup" widgetVar="chamgePassPopup"
                        showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >

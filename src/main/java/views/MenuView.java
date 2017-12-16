@@ -139,5 +139,8 @@ public class MenuView {
         }
         clean();
     }
+    public void deleteAnnouncemnet(int id){
+        DatabaseManager.deleteAnnouncement(id);
+    }
 }
 
