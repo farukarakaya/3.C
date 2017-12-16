@@ -72,8 +72,12 @@ public class MapView {
     public List<String> getTypes(){
         List<String> types = new ArrayList<String>();
         types.add("Education");
-        types.add("Food");
-        types.add("Clothes");
+        types.add("Health");
+        types.add("Technology");
+        types.add("Clothing");
+        types.add("Sports");
+        types.add("Handicapped");
+        types.add("Other");
         return  types;
     }
     public void setType(){
