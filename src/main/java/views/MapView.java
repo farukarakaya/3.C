@@ -24,16 +24,14 @@ import java.util.List;
 @ManagedBean
 @SessionScoped
 public class MapView {
-    AnnouncementManager dataSource;
     Gson gson = new Gson();
     int announcementToShow;
     private String city = null;
     private String typeSelected = null;
     private String district = null;
-    private boolean need =true;
+    private boolean need = true;
     private boolean donation = true;
     private Cities cities;
-    private boolean filter = false;
     List<Announcement> announcements ;
     @PostConstruct
     public void init() {
@@ -46,7 +44,6 @@ public class MapView {
     }
     public void setAnnouncementToShow(){
         announcementToShow = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("ID"));
-        System.out.print(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("ID"));
     }
     public int getAnnouncementToShow(){return announcementToShow; }
     public Announcement getAnnouncememtByID(){
@@ -62,13 +59,11 @@ public class MapView {
         return cities.getCities();
     }
     public boolean isCitySelected(){
-        //System.out.println(city);
         return city ==null;
     }
     public String getDistrict(){return district;}
     public void setDistrict(){
         district = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("SelectedDistrict");
-        System.out.println("asad  "+ district);
     }
     public void setDistrict(String district){this.district=district;}
     public List<String> getDistricts(){
@@ -117,17 +112,20 @@ public class MapView {
         for (int i= 0; i < announcements.size(); i++){
             if(city == null || announcements.get(i).getCity().equals(city))
                 if(district == null || announcements.get(i).getDistrict().equals(district))
-                    if(typeSelected == null || announcements.get(i).getCategory().equals(typeSelected))
-                        if(need && announcements.get(i).isNeedOrDonation())
+                    if(typeSelected == null || announcements.get(i).getCategory().equals(typeSelected)) {
+                        if (need && announcements.get(i).isNeedOrDonation())
                             filteredannouncemnets.add(announcements.get(i));
-                        else if(donation && !announcements.get(i).isNeedOrDonation())
+                        else if (donation && !announcements.get(i).isNeedOrDonation())
                             filteredannouncemnets.add(announcements.get(i));
+                    }
         }
-       // announcements = filteredannouncemnets;
+        announcements = filteredannouncemnets;
     }
     public void makeFilter(){
         try {
-            RequestContext.getCurrentInstance().update("center");
+           // RequestContext.getCurrentInstance().update("center");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            //getAnnouncementsMap();
         }catch (Exception e){}
     }
 }
