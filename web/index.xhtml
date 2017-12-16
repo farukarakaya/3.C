@@ -27,7 +27,7 @@
              <p:outputPanel id="menuPanel" style="float: right;width: 20%">
                  <h:form>
                      <p:menu value="Options" rendered="#{sessionView.admin}">
-                         <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="manageEntries" icon="ui-icon-arrowrefresh-1-w"/>
+                         <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="manageEntriesScroll" icon="ui-icon-arrowrefresh-1-w"/>
                          <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()"  icon="ui-icon-close"/>
                          <p:menuitem value="Account Settings" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
                          <p:menuitem value="Manage Users" oncomplete="PF('announcementPopup').show()"  icon="ui-icon-close"/>
@@ -238,9 +238,9 @@
                      </p:panelGrid>
                  </h:form>
              </p:dialog>
-             <p:dialog rendered="#{manageEntriesView.renderDialog}" header="Manage Your Entries" id="manageEntries" widgetVar="manageEntries"
+             <p:dialog  header="Manage Your Entries" id="manageEntries" widgetVar="manageEntries"
              showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,150" >
-                 <p:dataScroller id="manageEntriesScroll" value="#{manageEntriesView.announcements}" var="announcement" chunkSize="10" mode="inline"
+                 <p:dataScroller rendered="#{manageEntriesView.renderDialog}" id="manageEntriesScroll" value="#{manageEntriesView.announcements}" var="announcement" chunkSize="10" mode="inline"
                                  scrollHeight="150">
                      <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                          <p:graphicImage value="images/embed2.jpg" width="120" height="100"/>
