@@ -41,6 +41,9 @@ public class SessionView {
     public boolean isGuest(){
         return (session == null);
     }
+    public boolean isNonGuest(){
+        return !isGuest();
+    }
     public boolean logIn(){
         User user = DatabaseManager.getUser(email,password);
         //User user = new User("Omer","farukarakaya@gmail.com","12345",true);
@@ -51,6 +54,10 @@ public class SessionView {
             session.setAttribute("username", user.getId());
             if(user.isAdmin()) session.setAttribute("isAdmin", "true");
             else session.setAttribute("isAdmin", "false");
+
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            } catch (Exception e) {}
             return true;
         }
         else{
@@ -64,6 +71,9 @@ public class SessionView {
     }
     public void logOut(){
         session.invalidate();
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+        } catch (Exception e) {}
     }
 
     public void setPassword(String password) {

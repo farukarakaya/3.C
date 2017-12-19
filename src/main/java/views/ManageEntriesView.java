@@ -8,6 +8,7 @@ import session.SessionUtils;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +43,8 @@ public class ManageEntriesView {
 
     public void deleteAnnouncemnet(int id){
         DatabaseManager.deleteAnnouncement(id);
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+        } catch (Exception e) {}
     }
 }

@@ -6,6 +6,7 @@ var clickedAnnouncementID;
 var title ;
 var city ;
 var district;
+var category;
 var infowindow = null; //Info Pop-up
 var geocity,geodistrict,geoaddress;
 function getAnnouncements(locs) {
@@ -26,10 +27,20 @@ function initMap() {
     // create an array of markers based on a given "locations" array.
     // The map() method here has nothing to do with the Google Maps API.
     var markers = locations.map(function(location) {
-        var marker=  new google.maps.Marker({
-            position: location.pos,
-            id: location.id
-        });
+        //if(location.needOrDonation) {
+            var marker = new google.maps.Marker({
+                position: location.pos,
+                id: location.id
+               // icon: "https://i.hizliresim.com/MamJk7.png"
+            });
+        /*}
+        if(!location.needOrDonation) {
+            var marker = new google.maps.Marker({
+                position: location.pos,
+                id: location.id,
+                icon: "https://i.hizliresim.com/4GXl1Y.png"
+            });
+        }*/
         marker.addListener('click', function() {
             if(infowindow != null) infowindow.close();
             setWindowContext(map,marker)
@@ -46,15 +57,18 @@ function setWindowContext(map,marker) {
      //console.log(locations); // id
      clickedAnnouncementID = marker.id;
      setWindowData(marker.id);
+     console.log(category);
+     console.log(city);
+     //document.getElementById("myImg").src = "images/illustrations/"+category+".png";
      var infoWindowContext = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h1 id="firstHeading" class="firstHeading">'+title+'</h1>'+
-        '<img id="myImg" src="images/embed2.jpg" width="120" height="100" style="float: left">'+
+        '<h3 id="firstHeading" class="firstHeading">'+title+'</h3>'+
+       // '<img id="myImg" src="images/logo.png" width="120" height="100" style="float: left">'+
         '<div id="container" style="float: left">'+
         '<div id="CityLabel">City:'+city+'</div>'+
         '<div id="DistrictLabel">District:'+district+'</div>'+
-        '<button type="button" id="myBtn"onclick="clickAnnouncement(clickedAnnouncementID)">Try it</button>'+
+        '<button type="button" id="myBtn"onclick="clickAnnouncement(clickedAnnouncementID)">Show</button>'+
         '</div></div>';
 
     infowindow = new google.maps.InfoWindow({
@@ -63,15 +77,13 @@ function setWindowContext(map,marker) {
     infowindow.open(map, marker);
 }
 function setWindowData(id) {
-    console.log(id);
     var location = getById(id);
-    console.log(location);
     title = location.title;
     city = location.city;
     district = location.district;
+    category = location.category;
 }
 function clickAnnouncement(id) {
-    console.log(id);
     sendID([{name:'ID', value:id}]);
 }
 function sendSelectedCity(scity) {

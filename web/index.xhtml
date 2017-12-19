@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -8,297 +8,295 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
-   <h:head>
-       <style type="text/css">
-           #map {
-               height: 100%;
-               width: 100%;
-           }
-       </style>
-       <script type="text/javascript" src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"/>
-       <script  type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSSCWTUs22Y7P48TIct292Esi-iBXujw" />
-       <script type="text/javascript" src="js/map.js"/>
-   </h:head>
+<h:head>
 
-     <h:body >
-      <p:layout fullPage="true">
-         <p:layoutUnit position="north"  size="200"  >
-             <p:graphicImage value="images/single_banner.png" style="float: left; width: 80%; height: 145px;" />
-             <p:outputPanel id="menuPanel" style="float: right;width: 20%">
-                 <h:form>
-                     <p:menu value="Options" rendered="#{sessionView.admin}">
-                         <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="" icon="ui-icon-arrowrefresh-1-w"/>
-                         <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()"  icon="ui-icon-close"/>
-                         <p:menuitem value="Account Settings" oncomplete="PF('chamgePassPopup').show()"  icon="ui-icon-close"/>
-                         <p:menuitem value="Manage Users" oncomplete="PF('usersPopup').show()"  icon="ui-icon-close"/>
-                         <p:separator/>
-                         <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
-                     </p:menu>
-                     <p:menu value="Options" rendered="#{sessionView.user}">
-                         <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="manageEntries" icon="ui-icon-arrowrefresh-1-w"/>
-                         <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()" icon="ui-icon-close"/>
-                         <p:menuitem value="Account Settings" oncomplete="PF('chamgePassPopup').show()"  icon="ui-icon-close"/>
-                         <p:separator/>
-                         <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
-                     </p:menu>
-                     <p:panelGrid columns="2" cellpadding="0" rendered="#{sessionView.guest}">
+    <script type="text/javascript" src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"/>
+    <script  type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCSSCWTUs22Y7P48TIct292Esi-iBXujw" />
+    <script type="text/javascript" src="js/map.js"/>
+</h:head>
+
+<h:body >
+    <style type="text/css">
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        .ui-panelgrid td, .ui-panelgrid tr{
+            border-style: none !important
+        }
+    </style>
+    <p:layout fullPage="true">
+        <p:layoutUnit position="north"  size="200"  >
+            <p:graphicImage value="images/single_banner.png" style="float: left; width: 80%; height: 145px;" />
+            <p:outputPanel id="menuPanel" style="float: right;width: 20%">
+                <h:form>
+                    <p:menu value="Options" rendered="#{sessionView.admin}">
+                        <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="" icon="ui-icon-arrowrefresh-1-w"/>
+                        <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()"  icon="ui-icon-close"/>
+                        <p:menuitem value="Account Settings" oncomplete="PF('chamgePassPopup').show()"  icon="ui-icon-close"/>
+                        <p:menuitem value="Manage Users" oncomplete="PF('usersPopup').show()"  icon="ui-icon-close"/>
+                        <p:separator/>
+                        <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
+                    </p:menu>
+                    <p:menu value="Options" rendered="#{sessionView.user}">
+                        <p:menuitem value="Manage Your Entries" oncomplete="PF('manageEntries').show()" update="manageEntries" icon="ui-icon-arrowrefresh-1-w"/>
+                        <p:menuitem value="Submit New" oncomplete="PF('submitNew').show()" icon="ui-icon-close"/>
+                        <p:menuitem value="Account Settings" oncomplete="PF('chamgePassPopup').show()"  icon="ui-icon-close"/>
+                        <p:separator/>
+                        <p:menuitem value="Sign Out" actionListener="#{sessionView.logOut}" update="menuPanel" icon="ui-icon-extlink"/>
+                    </p:menu>
+                    <p:panelGrid columns="2" cellpadding="0" rendered="#{sessionView.guest}">
                         <h:outputLabel value="email:"/>
                         <p:inputText value="#{sessionView.email}" />
-                         <h:outputLabel value="password:"/>
-                         <p:password id="nonFeedback" value="#{sessionView.password}" />
-                         <p:commandButton value="Log In" id="Login" actionListener="#{sessionView.logIn}" update="menuPanel" styleClass="ui-priority-primary" />
-                         <h:panelGrid columns="3">
-                             <h:outputLabel value="or you can"/>
-                             <p:spacer width="15"/>
-                             <p:commandButton value="Sign Up" id="signup" onclick="PF('signInPopup').show()" styleClass="ui-priority-primary" /></h:panelGrid>
-                     </p:panelGrid>
-                 </h:form>
-             </p:outputPanel>
-             <h:form>
-                 <p:remoteCommand name="sendCity" process="@this" update="DistrictFilter" action="#{mapView.setCity}"/>
-                 <p:remoteCommand name="sendDistrict" process="@this"  action="#{mapView.setDistrict}"/>
-                 <p:remoteCommand name="sendType" process="@this"  action="#{mapView.setType}"/>
-                 <p:remoteCommand name="sendIsNeed" process="@this"  action="#{mapView.setNeed}"/>
-                 <p:remoteCommand name="sendIsDonation" process="@this"  action="#{mapView.setDonation}"/>
-                 <p:panelGrid columns="8" cellpadding="1">
-                     <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{mapView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
-                         <f:selectItem itemLabel="Select City"  itemValue="" />
-                         <f:selectItems value="#{mapView.cities}" var="city" itemValue="#{city}" />
-                         <p:ajax event="change" oncomplete="sendSelectedCity(value)"/>
-                     </p:selectOneMenu>
-                     <p:selectOneMenu disabled="#{mapView.citySelected}" id="DistrictFilter" value="#{mapView.district}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                        <h:outputLabel value="password:"/>
+                        <p:password id="nonFeedback" value="#{sessionView.password}" />
+                        <p:commandButton value="Log In" id="Login" actionListener="#{sessionView.logIn}" update="menuPanel" styleClass="ui-priority-primary" />
+                        <h:panelGrid columns="3">
+                            <h:outputLabel value="or you can"/>
+                            <p:spacer width="15"/>
+                            <p:commandButton value="Sign Up" id="signup" onclick="PF('signInPopup').show()" styleClass="ui-priority-primary" /></h:panelGrid>
+                    </p:panelGrid>
+                </h:form>
+            </p:outputPanel>
+            <h:form>
+                <p:remoteCommand name="sendCity" process="@this" update="DistrictFilter" action="#{mapView.setCity}"/>
+                <p:remoteCommand name="sendDistrict" process="@this"  action="#{mapView.setDistrict}"/>
+                <p:remoteCommand name="sendType" process="@this"  action="#{mapView.setType}"/>
+                <p:remoteCommand name="sendIsNeed" process="@this"  action="#{mapView.setNeed}"/>
+                <p:remoteCommand name="sendIsDonation" process="@this"  action="#{mapView.setDonation}"/>
+                <p:panelGrid columns="8" >
+                    <p:selectOneMenu id="CityFilter" widgetVar="CityFilter" value="#{mapView.city}" style="width:125px" filter="true" filterMatchMode="startsWith">
+                        <f:selectItem itemLabel="Select City"  itemValue="" />
+                        <f:selectItems value="#{mapView.cities}" var="city" itemValue="#{city}" />
+                        <p:ajax event="change" oncomplete="sendSelectedCity(value)"/>
+                    </p:selectOneMenu>
+                    <p:selectOneMenu disabled="#{mapView.citySelected}" id="DistrictFilter" value="#{mapView.district}" filter="true" filterMatchMode="startsWith" style="width:125px">
                         <f:selectItem  itemLabel="Select District" itemValue="" />
                         <f:selectItems value="#{mapView.districts}" />
                         <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
-                     </p:selectOneMenu>
-                     <p:selectOneMenu  id="TypeFilter" value="#{mapView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
-                         <f:selectItem  itemLabel="Select Type" itemValue="" />
-                         <f:selectItems value="#{mapView.types}" />
-                         <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
-                     </p:selectOneMenu>
-                     <h:outputText value ="Need"/>
-                     <p:selectBooleanCheckbox value="#{mapView.need}">
-                         <p:ajax event="change" oncomplete="sendNeed(value)"/>
-                     </p:selectBooleanCheckbox>
-                     <h:outputText value ="Donation"/>
-                     <p:selectBooleanCheckbox value="#{mapView.donation}" >
-                         <p:ajax event="change" oncomplete="sendDonation(value)"/>
-                     </p:selectBooleanCheckbox>
-                     <p:commandButton id="filterButton" value="Filter"  actionListener="#{mapView.makeFilter}" />
-                 </p:panelGrid>
-             </h:form>
-         </p:layoutUnit>
-         <p:layoutUnit position="east" id="east" size="400">
-                 <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
-                                 scrollHeight="450">
-                     <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                         <p:graphicImage value="images/illustrations/#{announcement.category}.png" width="120" height="100"/>
-                         <p:outputPanel>
-                             <h:form>
-                                 <p:remoteCommand name="sendID" process="@this" oncomplete="PF('announcementPopup').show()"
-                                                 update="announcementPopup" action="#{mapView.setAnnouncementToShow}" />
-                             </h:form>
-                             <h:panelGrid columns="1" cellpadding="2">
-                                 <h:outputText value="#{announcement.title}" style="font-weight: bold"/>
+                    </p:selectOneMenu>
+                    <p:selectOneMenu  id="TypeFilter" value="#{mapView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                        <f:selectItem  itemLabel="Select Type" itemValue="" />
+                        <f:selectItems value="#{mapView.types}" />
+                        <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
+                    </p:selectOneMenu>
+                    <h:outputText value ="Need"/>
+                    <p:selectBooleanCheckbox value="#{mapView.need}">
+                        <p:ajax event="change" oncomplete="sendNeed(value)"/>
+                    </p:selectBooleanCheckbox>
+                    <h:outputText value ="Donation"/>
+                    <p:selectBooleanCheckbox value="#{mapView.donation}" >
+                        <p:ajax event="change" oncomplete="sendDonation(value)"/>
+                    </p:selectBooleanCheckbox>
+                    <p:commandButton id="filterButton" value="Filter"  actionListener="#{mapView.makeFilter}" />
+                </p:panelGrid>
+            </h:form>
+        </p:layoutUnit>
+        <p:layoutUnit position="east" id="east" size="400">
+            <p:dataScroller value="#{dataScrollerView.announcements}" var="announcement" chunkSize="10" mode="inline"
+                            scrollHeight="500">
+                <h:panelGrid columns="2" columnClasses="logo,detail" style=" width:100%;text-align: left">
+                    <p:graphicImage value="images/illustrations/#{announcement.category}.png" width="120" height="100"/>
+                    <p:outputPanel>
+                        <h:form>
+                            <p:remoteCommand name="sendID" process="@this" oncomplete="PF('announcementPopup').show()"
+                                             update="announcementPopup" action="#{mapView.setAnnouncementToShow}" />
+                        </h:form>
+                        <h:panelGrid columns="1" cellpadding="2" style="alignment: left">
+                            <h:outputText value="#{announcement.title}" style="font-weight: bold"/>
 
-                                 <h:outputText value="#{announcement.id}" style="font-weight: bold"/>
+                            <h:outputText value="#{announcement.city}" style="font-weight: bold"/>
 
-                                 <p:commandButton value="Show" id="scrollbutton"  onclick="clickAnnouncement(#{announcement.id})"/>
+                            <p:panelGrid columns="2">
+                                <p:commandButton value="Show" id="scrollbutton"  onclick="clickAnnouncement(#{announcement.id})"/>
+                                <p:commandButton  rendered="#{sessionView.admin}" actionListener="#{manageEntriesView.deleteAnnouncemnet(announcement.id)}" icon="ui-icon-close"/>
+                            </p:panelGrid>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:panelGrid>
+                <p:separator />
+            </p:dataScroller>
+        </p:layoutUnit>
+        <p:layoutUnit id="center" position="center" value='10' >
+            <input type="hidden" name="filter" value='10' />
+            <div id="map" >
+                <script type="text/javascript">
+                    getAnnouncements(#{mapView.announcementsMap});
+                    initMap();
+                </script>
+                <h:form prependId="false">
+                    <p:dialog header="#{mapView.getAnnouncememtByID().title}" id="announcementPopup" widgetVar="announcementPopup"
+                              showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="150,250" >
+                        <p:ajax event="open" update="announcementPopupImage"/>
+                        <p:graphicImage id="announcementPopupImage" value="images/illustrations/#{mapView.getAnnouncememtByID().category}.png" width="240" height="200" style="float: left"/>
+                        <h:panelGrid columns="1" style="margin-bottom:10px; float: left">
+                            <h:outputText value="#{mapView.getAnnouncememtByID().detail}" style="font-weight: mormal"/>
+                            <h:outputText value="#{mapView.getAnnouncememtByID().city} / #{mapView.getAnnouncememtByID().district}" style="font-weight: mormal"/>
+                            <h:outputText rendered="#{sessionView.nonGuest}" value="#{mapView.getAnnouncememtByID().contactInfo}" style="font-weight: mormal"/>
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+            </div>
+        </p:layoutUnit>
+        <p:layoutUnit position="south" size="25">
 
-                             </h:panelGrid>
-                         </p:outputPanel>
-                     </h:panelGrid>
-                     <p:separator />
-                 </p:dataScroller>
-         </p:layoutUnit>
-         <p:layoutUnit id="center" position="center" value='10' >
-             <input type="hidden" name="filter" value='10' />
-             <div id="map" >
-                 <script type="text/javascript">
-                     getAnnouncements(#{mapView.announcementsMap});
-                     initMap();
-                 </script>
-                 <h:form prependId="false">
-                     <p:dialog header="#{mapView.getAnnouncememtByID().title}" id="announcementPopup" widgetVar="announcementPopup"
-                               showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="150,250" >
-                         <p:ajax event="open" update="announcementPopupImage"/>
-                         <p:graphicImage id="announcementPopupImage" value="images/illustrations/#{mapView.getAnnouncememtByID().category}.png" width="240" height="200" style="float: left"/>
-                         <h:panelGrid columns="1" style="margin-bottom:10px; float: left" cellpadding="5">
-                             <h:outputText value="#{mapView.getAnnouncememtByID().detail}" style="font-weight: mormal"/>
-                             <h:outputText rendered="#{sessionView.user}" value="#{mapView.getAnnouncememtByID().contactInfo}" style="font-weight: mormal"/>
-                         </h:panelGrid>
-                     </p:dialog>
-                 </h:form>
-             </div>
-         </p:layoutUnit>
-         <p:layoutUnit position="south" size="50">
+            <p:dialog header="Sumnit New Announcement" id="submitNew" widgetVar="submitNew"  style="min-width: 800px; min-height: 600px;"
+                      showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,50" >
+                <h:form id="submitFirstTab" prependId="false">
+                    <p:messages id="submitMessages" showDetail="true" autoUpdate="true" />
+                    <p:accordionPanel id="sumbitNewAcordion" widgetVar="sumbitNewAcordion">
+                        <p:tab title="General İnformation">
 
-             <p:dialog header="Sumnit New Announcement" id="submitNew" widgetVar="submitNew"  style="min-width: 800px; min-height: 600px;"
-                       showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,50" >
-                 <h:form id="submitFirstTab" prependId="false">
-                     <p:messages id="submitMessages" showDetail="true" autoUpdate="true" />
-                 <p:accordionPanel id="sumbitNewAcordion" widgetVar="sumbitNewAcordion">
-                     <p:tab title="General İnformation">
-
-                             <p:remoteCommand name="sendCity" process="@this" update="districtsubmit,sumbitGInfButton" action="#{createAnnouncementView.setCity}"/>
-                             <p:remoteCommand name="sendDistrict" process="@this" update="address,sumbitGInfButton" action="#{createAnnouncementView.setDistrict}"/>
-                             <p:remoteCommand name="sendType" process="@this"  update="sumbitGInfButton" action="#{createAnnouncementView.setType}"/>
-                             <p:remoteCommand name="sendNeedDonation" process="@this"  update="sumbitGInfButton,verifyAdress" action="#{createAnnouncementView.setNeedDonation}"/>
-                             <p:remoteCommand name="SendAddress" process="@this"  update="sumbitGInfButton" action="#{createAnnouncementView.setAddress}"/>
-                             <p:remoteCommand name="SendTitle" process="@this"  update="sumbitGInfButton" action="#{createAnnouncementView.setTitle}"/>
-                             <h:panelGrid columns="2" cellpadding="1">
-                                 <h:panelGrid columns="2" cellpadding="1">
-                                     <h:outputLabel for="title" value="Title" />
-                                     <p:inputText id="title" value="#{createAnnouncementView.title}" label="Title">
-                                         <p:ajax event="change" oncomplete="sendtitle(value)"/>
-                                     </p:inputText>
-                                     <h:outputLabel for="citysubmit" value="City" />
-                                     <p:selectOneMenu id="citysubmit" widgetVar="citysubmit" value="#{createAnnouncementView.city}"
-                                                      required="true" requiredMessage="This value is required." style="width:125px" filter="true" filterMatchMode="startsWith">
-                                         <f:selectItem itemLabel="Select City"  itemValue="" />
-                                         <f:selectItems value="#{createAnnouncementView.cities}" var="city" itemValue="#{city}" />
-                                         <p:ajax event="change" oncomplete="sendSelectedCity(value)"/>
-                                     </p:selectOneMenu>
-                                     <h:outputLabel for="citysubmit" value="District" />
-                                     <p:selectOneMenu disabled="#{createAnnouncementView.citySelected}" id="districtsubmit" widgetVar="districtsubmit" value="#{createAnnouncementView.district}"
-                                                      filter="true" filterMatchMode="startsWith"  required="true" requiredMessage="This value is required." style="width:125px">
-                                         <f:selectItem  itemLabel="Select District" itemValue="" />
-                                         <f:selectItems value="#{createAnnouncementView.districts}" />
-                                         <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
-                                     </p:selectOneMenu>
-                                     <h:outputLabel for="address" value="Address" />
-                                     <p:inputTextarea disabled="#{createAnnouncementView.districtSelected}" id="address" widgetVar="address" value="#{createAnnouncementView.address}" label="Address">
-                                         <p:ajax event="change" oncomplete="sendAdress(value)"/>
-                                     </p:inputTextarea>
-                                     <h:outputLabel for="typesumbit" value="Category" />
-                                     <p:selectOneMenu  id="typesumbit" value="#{createAnnouncementView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
-                                         <f:selectItem  itemLabel="Select Type" itemValue="" />
-                                         <f:selectItems value="#{createAnnouncementView.types}" />
-                                         <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
-                                     </p:selectOneMenu>
-                                     <h:outputLabel for="checbox" value="Need Or Donation" />
-                                     <p:selectOneRadio id="checbox" value="#{createAnnouncementView.needDonation}">
-                                         <f:selectItem itemLabel="Donation" itemValue="Donation" />
-                                         <f:selectItem itemLabel="Need" itemValue="Need" />
-                                         <p:ajax event="change" oncomplete="sendND(value)"/>
-                                     </p:selectOneRadio>
-                                     <p:commandButton disabled="#{createAnnouncementView.button1Active}" id="sumbitGInfButton" value="submitGeneralInfo"  update="@this" onclick="geocode()"
-                                                      validateClient="true" style="margin-top:10px;" />
-                                 </h:panelGrid>
-                                 <h:panelGrid columns="1" cellpadding="1" id="verifyPanel" widgetwar="verifyPanel">
-                                     <h:outputLabel for="geoMap" value="Verify Address" />
-                                     <p:gmap id="geoMap" widgetVar="geoMap" center="#{createAnnouncementView.centerGeoMap}"  zoom="15" type="HYBRID"  model="#{createAnnouncementView.geoModel}" style="width:300px;height:300px">
-                                         <p:ajax event="geocode" listener="#{createAnnouncementView.onGeocode}" update="@this" />
-                                         <p:ajax event="markerDrag" listener="#{createAnnouncementView.onMarkerDrag}"  />
-                                     </p:gmap>
-                                     <p:commandButton disabled="#{createAnnouncementView.button1Active}" id="verifyAdress" value="verify Adress" update="@this" onclick="PF('sumbitNewAcordion').select(1)"
-                                                      style="margin-top:10px;" />
-                                 </h:panelGrid>
-                             </h:panelGrid>
-                     </p:tab>
-                     <p:tab title="Description and Contact Information" >
-                         <h:panelGrid columns="1" cellpadding="0">
-                             <h:outputText value="Enter Descirption" />
-                             <p:inputTextarea widgetVar="deciriptionEditor" value="#{createAnnouncementView.desciription}" height="100" style=" width:692px; margin-bottom:10px"/>
-                             <h:outputText value="Enter Contact Information" />
-                             <p:inputTextarea widgetVar="ContactInfoEditor" value="#{createAnnouncementView.contactInfo}" height="100" style="width:692px; margin-bottom:10px"/>
-                             <p:commandButton  id="submitDesConInf" value="Submit"  update="@this" onclick="PF('sumbitNewAcordion').select(2)"
-                                               validateClient="true" style="margin-top:10px;" />
-                         </h:panelGrid>
-                     </p:tab>
-                     <p:tab title="Photo">
-                         <h:panelGrid columns="2" cellpadding="1">
-                             <p:fileUpload value="#{createAnnouncementView.file}" mode="simple" skinSimple="true"/>
-
-                             <p:commandButton value="Submit" ajax="false" actionListener="#{createAnnouncementView.upload}" update="center,east" disabled="false" />
-
-                             <p:graphicImage rendered="false" value="images/embed2.jpg" />
-                         </h:panelGrid>
-                     </p:tab>
-                 </p:accordionPanel>
-             </h:form>
-             </p:dialog>
-             <p:dialog header="Sıgn In" id="signInPopup" widgetVar="signInPopup"
-                       showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
-                 <p:messages id="messages" showDetail="true" autoUpdate="true" />
-                 <h:form id="signInForm" prependId="false">
-                     <p:panelGrid rendered="#{menuView.signedIn1}" id="SignInGrid" columns="2" cellpadding="1">
-                         <p:outputLabel value="Full Name"/>
-                         <p:inputText value="#{menuView.fullName}" required="true" />
-                         <p:outputLabel value="E-Mail" required="true"/>
-                         <p:inputText value="#{menuView.email}" required="true"/>
-                         <p:outputLabel value="Password"/>
-                         <p:password id="password1" value="#{menuView.password}" match="password2" required="true"/>
-                         <p:outputLabel value="Confirm Password"/>
-                         <p:password id="password2" value="#{menuView.cPassword}" required="true"/>
-                         <p:commandButton value="Sign In" update="signInForm" actionListener="#{menuView.singUp}" />
-                     </p:panelGrid>
-                     <p:outputLabel rendered="#{menuView.signedIn2}" value="Please Enter Your Verification Code That Sent Your Email"/>
-                     <p:panelGrid columns="3" cellPadding="0" rendered="#{menuView.signedIn2}">
-                         <p:outputLabel value="vcode: "/>
-                         <p:inputText value="#{menuView.vcode}" required="true" />
-                         <p:commandButton value="Sign In" update="@this" actionListener="#{menuView.validate}"/>
-                     </p:panelGrid>
-                 </h:form>
-             </p:dialog>
-             <p:dialog  header="Manage Your Entries" id="manageEntries" widgetVar="manageEntries"
-             showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,150" >
-                 <h:form>
-                 <p:dataTable id="manageEntriesTable" var="announcement" value="#{manageEntriesView.announcements}" scrollable="true" scrollHeight="250" style="width: 600px;">
-                     <p:column headerText="Id"  >
-                         <h:outputText value="#{announcement.title}" />
-                     </p:column>
-                     <p:column headerText="City" >
-                         <h:outputText value="#{announcement.city}" />
-                     </p:column>
-                     <p:column headerText="District" >
-                         <h:outputText value="#{announcement.district}" />
-                     </p:column>
-                     <p:column headerText="Show" >
-                         <p:commandButton onclick="PF('chamgePassPopup').hide()" oncomplete="clickAnnouncement(#{announcement.id})" icon="ui-icon-search" title="View">
-                         </p:commandButton>
-                     </p:column>
-                     <p:column headerText="Delete" >
-                         <p:commandButton  actionListener="#{manageEntriesView.deleteAnnouncemnet(announcement.id)}" update="manageEntriesTable" icon="ui-icon-search" title="View">
-                         </p:commandButton>
-                     </p:column>
-                 </p:dataTable>
-                 </h:form>
-             </p:dialog>
-             <p:dialog  header="Manage Users" id="usersPopup" widgetVar="usersPopup"
-                        showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,150" >
-                 <h:form>
-                     <p:dataTable id="manageUsersTable" var="user" value="#{manageUsersView.users}" scrollable="true" scrollHeight="250" style="width: 600px;">
-                         <p:column headerText="Full Name"  >
-                             <h:outputText value="#{user.fullName}" />
-                         </p:column>
-                         <p:column headerText="Email"  >
-                             <h:outputText value="#{user.email}" />
-                         </p:column>
-                         <p:column headerText="Delete" >
-                             <p:commandButton  actionListener="#{manageUsersView.deleteUser(user.id)}" update="manageUsersTable" icon="ui-icon-search" title="View">
-                             </p:commandButton>
-                         </p:column>
-                     </p:dataTable>
-                 </h:form>
-             </p:dialog>
-             <p:dialog header="Change Password" id="chamgePassPopup" widgetVar="chamgePassPopup"
-                       showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
-                 <p:messages id="CPmessages" showDetail="true" autoUpdate="true" />
-                 <h:form id="ChangePasswordForm" prependId="false">
-                     <p:panelGrid  id="ChangePasswordGrid" columns="2" cellpadding="1">
-                         <p:outputLabel value="Password"/>
-                         <p:password id="cpassword" value="#{menuView.cPassword}"  required="true"/>
-                         <p:outputLabel value="Password"/>
-                         <p:password id="cpassword1" value="#{menuView.cPassword1}" match="cpassword2" required="true"/>
-                         <p:outputLabel value="Confirm Password"/>
-                         <p:password id="cpassword2" value="#{menuView.cPassword2}" required="true"/>
-                         <p:commandButton value="Sign In"  actionListener="#{menuView.changePassword}"/>
-                     </p:panelGrid>
-                 </h:form>
-             </p:dialog>
-         </p:layoutUnit>
-      </p:layout>
-     </h:body>
+                            <p:remoteCommand name="sendCity" process="@this" update="districtsubmit,sumbitGInfButton" action="#{createAnnouncementView.setCity}"/>
+                            <p:remoteCommand name="sendDistrict" process="@this" update="address,sumbitGInfButton" action="#{createAnnouncementView.setDistrict}"/>
+                            <p:remoteCommand name="sendType" process="@this"  update="sumbitGInfButton" action="#{createAnnouncementView.setType}"/>
+                            <p:remoteCommand name="sendNeedDonation" process="@this"  update="sumbitGInfButton,verifyAdress" action="#{createAnnouncementView.setNeedDonation}"/>
+                            <p:remoteCommand name="SendAddress" process="@this"  update="sumbitGInfButton" action="#{createAnnouncementView.setAddress}"/>
+                            <p:remoteCommand name="SendTitle" process="@this"  update="sumbitGInfButton" action="#{createAnnouncementView.setTitle}"/>
+                            <h:panelGrid columns="2" >
+                                <h:panelGrid columns="2" >
+                                    <h:outputLabel for="title" value="Title" />
+                                    <p:inputText id="title" value="#{createAnnouncementView.title}" label="Title">
+                                        <p:ajax event="change" oncomplete="sendtitle(value)"/>
+                                    </p:inputText>
+                                    <h:outputLabel for="citysubmit" value="City" />
+                                    <p:selectOneMenu id="citysubmit" widgetVar="citysubmit" value="#{createAnnouncementView.city}"
+                                                     required="true" requiredMessage="This value is required." style="width:125px" filter="true" filterMatchMode="startsWith">
+                                        <f:selectItem itemLabel="Select City"  itemValue="" />
+                                        <f:selectItems value="#{createAnnouncementView.cities}" var="city" itemValue="#{city}" />
+                                        <p:ajax event="change" oncomplete="sendSelectedCity(value)"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel for="citysubmit" value="District" />
+                                    <p:selectOneMenu disabled="#{createAnnouncementView.citySelected}" id="districtsubmit" widgetVar="districtsubmit" value="#{createAnnouncementView.district}"
+                                                     filter="true" filterMatchMode="startsWith"  required="true" requiredMessage="This value is required." style="width:125px">
+                                        <f:selectItem  itemLabel="Select District" itemValue="" />
+                                        <f:selectItems value="#{createAnnouncementView.districts}" />
+                                        <p:ajax event="change" oncomplete="sendSelectedDistrict(value)"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel for="address" value="Address" />
+                                    <p:inputTextarea disabled="#{createAnnouncementView.districtSelected}" id="address" widgetVar="address" value="#{createAnnouncementView.address}" label="Address">
+                                        <p:ajax event="change" oncomplete="sendAdress(value)"/>
+                                    </p:inputTextarea>
+                                    <h:outputLabel for="typesumbit" value="Category" />
+                                    <p:selectOneMenu  id="typesumbit" value="#{createAnnouncementView.typeSelected}" filter="true" filterMatchMode="startsWith" style="width:125px">
+                                        <f:selectItem  itemLabel="Select Type" itemValue="" />
+                                        <f:selectItems value="#{createAnnouncementView.types}" />
+                                        <p:ajax event="change" oncomplete="sendSelectedType(value)"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel for="checbox" value="Need Or Donation" />
+                                    <p:selectOneRadio id="checbox" value="#{createAnnouncementView.needDonation}">
+                                        <f:selectItem itemLabel="Donation" itemValue="Donation" />
+                                        <f:selectItem itemLabel="Need" itemValue="Need" />
+                                        <p:ajax event="change" oncomplete="sendND(value)"/>
+                                    </p:selectOneRadio>
+                                    <p:commandButton disabled="#{createAnnouncementView.button1Active}" id="sumbitGInfButton" value="Locate Adress"  update="@this" onclick="geocode()"
+                                                     validateClient="true" style="margin-top:10px;" />
+                                </h:panelGrid>
+                                <h:panelGrid columns="1" id="verifyPanel" widgetwar="verifyPanel">
+                                    <h:outputLabel for="geoMap" value="Verify Address" />
+                                    <p:gmap id="geoMap" widgetVar="geoMap" center="#{createAnnouncementView.centerGeoMap}"  zoom="15" type="HYBRID"  model="#{createAnnouncementView.geoModel}" style="width:300px;height:300px">
+                                        <p:ajax event="geocode" listener="#{createAnnouncementView.onGeocode}" update="@this" />
+                                        <p:ajax event="markerDrag" listener="#{createAnnouncementView.onMarkerDrag}"  />
+                                    </p:gmap>
+                                    <p:commandButton disabled="#{createAnnouncementView.button1Active}" id="verifyAdress" value="Next Step" update="@this" onclick="PF('sumbitNewAcordion').select(1)"
+                                                     style="margin-top:10px;" />
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Description and Contact Information" >
+                            <h:panelGrid columns="1" >
+                                <h:outputText value="Enter Descirption" />
+                                <p:inputTextarea widgetVar="deciriptionEditor" value="#{createAnnouncementView.desciription}" height="100" style=" width:692px; margin-bottom:10px"/>
+                                <h:outputText value="Enter Contact Information" />
+                                <p:inputTextarea widgetVar="ContactInfoEditor" value="#{createAnnouncementView.contactInfo}" height="100" style="width:692px; margin-bottom:10px"/>
+                                <p:commandButton  id="submitDesConInf" value="Submit" actionListener="#{createAnnouncementView.upload}" onclick="PF('sumbitNewAcordion').select(0)"
+                                                  validateClient="true" style="margin-top:10px;" />
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Sıgn In" id="signInPopup" widgetVar="signInPopup"
+                      showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
+                <p:messages id="messages" showDetail="true" autoUpdate="true" />
+                <h:form id="signInForm" prependId="false">
+                    <p:panelGrid rendered="#{menuView.signedIn1}" id="SignInGrid" columns="2" cellpadding="1">
+                        <p:outputLabel value="Full Name"/>
+                        <p:inputText value="#{menuView.fullName}" required="true" />
+                        <p:outputLabel value="E-Mail" required="true"/>
+                        <p:inputText value="#{menuView.email}" required="true"/>
+                        <p:outputLabel value="Password"/>
+                        <p:password id="password1" value="#{menuView.password}" match="password2" required="true"/>
+                        <p:outputLabel value="Confirm Password"/>
+                        <p:password id="password2" value="#{menuView.cPassword}" required="true"/>
+                        <p:commandButton value="Sign In" update="signInForm" actionListener="#{menuView.singUp}" />
+                    </p:panelGrid>
+                    <p:outputLabel rendered="#{menuView.signedIn2}" value="Please Enter Your Verification Code That Sent Your Email"/>
+                    <p:panelGrid columns="3"  rendered="#{menuView.signedIn2}">
+                        <p:outputLabel value="vcode: "/>
+                        <p:inputText value="#{menuView.vcode}" required="true" />
+                        <p:commandButton value="Sign In" update="@this" actionListener="#{menuView.validate}"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <p:dialog  header="Manage Your Entries" id="manageEntries" widgetVar="manageEntries"
+                       showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,150" >
+                <h:form>
+                    <p:dataTable id="manageEntriesTable" var="announcement" value="#{manageEntriesView.announcements}" scrollable="true" scrollHeight="250" style="width: 600px;">
+                        <p:column headerText="Id"  >
+                            <h:outputText value="#{announcement.title}" />
+                        </p:column>
+                        <p:column headerText="City" >
+                            <h:outputText value="#{announcement.city}" />
+                        </p:column>
+                        <p:column headerText="District" >
+                            <h:outputText value="#{announcement.district}" />
+                        </p:column>
+                        <p:column headerText="Show" >
+                            <p:commandButton onclick="PF('chamgePassPopup').hide()" oncomplete="clickAnnouncement(#{announcement.id})" icon="ui-icon-search" title="View">
+                            </p:commandButton>
+                        </p:column>
+                        <p:column headerText="Delete" >
+                            <p:commandButton  actionListener="#{manageEntriesView.deleteAnnouncemnet(announcement.id)}" update="manageEntriesTable" icon="ui-icon-close" title="View">
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:dialog>
+            <p:dialog  header="Manage Users" id="usersPopup" widgetVar="usersPopup"
+                       showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,150" >
+                <h:form>
+                    <p:dataTable id="manageUsersTable" var="user" value="#{manageUsersView.users}" scrollable="true" scrollHeight="250" style="width: 600px;">
+                        <p:column headerText="Full Name"  >
+                            <h:outputText value="#{user.fullName}" />
+                        </p:column>
+                        <p:column headerText="Email"  >
+                            <h:outputText value="#{user.email}" />
+                        </p:column>
+                        <p:column headerText="Delete" >
+                            <p:commandButton  actionListener="#{manageUsersView.deleteUser(user.id)}" update="manageUsersTable" icon="ui-icon-close" title="View" >
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Change Password" id="chamgePassPopup" widgetVar="chamgePassPopup"
+                      showEffect="drop" hideEffect="drop" resizable="false" dynamic="true" closeOnEscape="true" position="550,250" >
+                <p:messages id="CPmessages" showDetail="true" autoUpdate="true" />
+                <h:form id="ChangePasswordForm" prependId="false">
+                    <p:panelGrid  id="ChangePasswordGrid" columns="2" >
+                        <p:outputLabel value="Password"/>
+                        <p:password id="cpassword" value="#{menuView.cPassword}"  required="true"/>
+                        <p:outputLabel value="Password"/>
+                        <p:password id="cpassword1" value="#{menuView.cPassword1}" match="cpassword2" required="true"/>
+                        <p:outputLabel value="Confirm Password"/>
+                        <p:password id="cpassword2" value="#{menuView.cPassword2}" required="true"/>
+                        <p:commandButton value="Sign In"  actionListener="#{menuView.changePassword}"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </p:layoutUnit>
+    </p:layout>
+</h:body>
 
 </html>

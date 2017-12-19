@@ -176,7 +176,7 @@ public class createAnnouncementView {private MapModel geoModel;
             RequestContext.getCurrentInstance().update("center");
             clean();
             try{
-            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
             }catch (Exception e){}
     }
     private void clean(){
