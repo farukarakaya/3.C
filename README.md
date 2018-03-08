@@ -6,10 +6,6 @@ Our web application aims to help them answer/create "needs" and organize them in
 
 Volunteers will be able to create their needs in a spesific way: We need "x" amount of notebooks in school "y". and it will be displayed on the map of Turkey. Moreover, if volunteers have things for a giveaway they will also be able to enter it to this system. 
 
-Users will also be able to filter the needs depending on distance, topic etc.
 
-Group Members:
-Yağız Gani, 
-Kanan Asadov, 
-Ömer Faruk Karakaya, 
-Mert Osman Dönmezyürek 
+
+
